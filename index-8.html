@@ -1,0 +1,1961 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FF6548">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Gistly</title>
+<link rel="preconnect" href="https://ppayqwyinhfzjouwfyps.supabase.co" crossorigin>
+<style>
+:root{--coral:#FF6548;--coral-d:#E94F35;--blue:#3478F6;--blue-d:#2457B8;--mint:#C8F4DF;--peach:#FFE0D5;--pale:#E1ECFF;--bg:#FFF9F3;--surf:#fff;--text:#242832;--sub:#727785;--line:#EBE7E2;--ok:#21865B;--err:#C83E48;--in:#fff;--out:#FFE0D5}
+[data-theme=dark]{--bg:#16181d;--surf:#20232a;--text:#f2efeb;--sub:#9aa0ae;--line:#2e323b;--in:#2a2e37;--out:#5a2f26;--peach:#4a2a22;--mint:#1f4036;--pale:#22344f}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;justify-content:center;font-size:16px}
+#app{width:100%;max-width:480px;height:100%;background:var(--bg);position:relative;overflow:hidden;border-inline:1px solid var(--line)}
+.v{display:none;flex-direction:column;height:100%;padding-top:env(safe-area-inset-top)}
+.v.on{display:flex}
+button{font:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.btn{height:52px;border:0;border-radius:14px;background:var(--coral);color:#fff;font-weight:600;padding:0 22px;width:100%}
+.btn:active{background:var(--coral-d)}
+.btn:disabled{opacity:.5}
+.btn.ghost{background:transparent;color:var(--blue);border:1.5px solid var(--line)}
+.btn.sm{height:44px;width:auto;border-radius:12px}
+input,textarea,select{font:inherit;color:var(--text);width:100%;background:var(--surf);border:1.5px solid var(--line);border-radius:12px;padding:0 14px;height:50px;outline:none}
+textarea{padding:12px 14px;height:auto;resize:none}
+input:focus,textarea:focus{border-color:var(--blue)}
+label{font-size:14px;font-weight:600;display:block;margin:14px 0 6px}
+.err{color:var(--err);font-size:13px;min-height:18px;margin-top:6px}
+.ok{color:var(--ok);font-size:13px;margin-top:6px}
+.hint{color:var(--sub);font-size:13px;margin-top:8px;line-height:1.4}
+.pad{padding:0 20px}
+.scroll{flex:1;overflow-y:auto}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:26px;letter-spacing:-.5px;color:var(--coral)}
+.hero{flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 24px;gap:14px}
+.hero h1{font-size:34px;line-height:1.1;letter-spacing:-1px}
+.hero p{color:var(--sub);line-height:1.5}
+.blobs{display:flex;gap:10px;margin:8px 0}
+.blobs div{border-radius:18px;padding:12px 14px;font-size:14px;font-weight:500;max-width:78%}
+.top{display:flex;align-items:center;gap:10px;padding:14px 20px 8px}
+.top h2{flex:1;font-size:24px;letter-spacing:-.5px}
+.av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none;color:#242832}
+.av.sm{width:38px;height:38px;font-size:14px}
+.row{display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;background:var(--surf);border-bottom:1px solid var(--line);min-height:68px;width:100%;text-align:left;border-inline:0;border-top:0}
+.row .mid{flex:1;min-width:0}
+.row .nm{font-weight:600}
+.row .pv{color:var(--sub);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .tm{font-size:12px;color:var(--sub);text-align:right}
+.badge{background:var(--coral);color:#fff;border-radius:99px;font-size:12px;font-weight:700;padding:2px 7px;margin-top:4px;display:inline-block}
+.chips{display:flex;gap:8px;padding:6px 20px 12px}
+.chip{border:1.5px solid var(--line);background:var(--surf);border-radius:99px;padding:8px 16px;font-size:14px;font-weight:500;min-height:40px}
+.chip.on{background:var(--coral);border-color:var(--coral);color:#fff}
+.empty{text-align:center;color:var(--sub);padding:48px 32px;line-height:1.5}
+.empty b{display:block;color:var(--text);font-size:18px;margin-bottom:6px}
+.nav{display:flex;border-top:1px solid var(--line);background:var(--surf);padding-bottom:env(safe-area-inset-bottom)}
+.nav button{flex:1;border:0;background:none;padding:10px 0 8px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;font-weight:500;color:var(--sub);min-height:56px}
+.nav button.on{color:var(--coral)}
+.nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.fab{position:absolute;right:20px;bottom:calc(76px + env(safe-area-inset-bottom));width:56px;height:56px;border-radius:50%;background:var(--coral);color:#fff;border:0;font-size:30px;box-shadow:0 4px 14px rgba(255,101,72,.4)}
+.chead{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surf);border-bottom:1px solid var(--line)}
+.chead .ib{width:44px;height:44px;border:0;background:none;font-size:22px}
+.chead .t{flex:1;min-width:0}
+.chead .t b{display:block}
+.chead .t span{font-size:12px;color:var(--sub)}
+#msgs{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:3px}
+.b{max-width:82%;padding:9px 13px;border-radius:16px;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere}
+.b.in{align-self:flex-start;background:var(--in);border-bottom-left-radius:5px;border:1px solid var(--line)}
+.b.out{align-self:flex-end;background:var(--out);border-bottom-right-radius:5px}
+.b.first{margin-top:8px}
+.b small{display:block;font-size:11px;color:var(--sub);text-align:right;margin-top:2px}
+.b small .rd{color:var(--blue);font-weight:700}
+.more{align-self:center;background:var(--pale);border:0;border-radius:99px;padding:8px 16px;font-size:13px;font-weight:500;color:var(--blue-d);margin-bottom:8px}
+.comp{display:flex;align-items:flex-end;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:var(--surf);border-top:1px solid var(--line)}
+.comp textarea{max-height:120px;min-height:46px;border-radius:23px}
+.send{width:46px;height:46px;border-radius:50%;background:var(--coral);border:0;color:#fff;font-size:20px;flex:none}
+.send:disabled{opacity:.4}
+.banner{background:var(--pale);color:var(--blue-d);font-size:13px;text-align:center;padding:6px;font-weight:500;display:none}
+.banner.on{display:block}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:16px;margin:0 20px 14px}
+.sec{font-size:13px;font-weight:600;color:var(--sub);margin:18px 20px 8px}
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;min-height:48px}
+.setrow small{display:block;color:var(--sub);font-size:12px;margin-top:2px}
+.tg{width:50px;height:30px;border-radius:99px;background:var(--line);border:0;position:relative;flex:none}
+.tg::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .15s}
+.tg.on{background:var(--coral)}
+.tg.on::after{transform:translateX(20px)}
+.phead{background:var(--peach);padding:28px 20px 20px;text-align:center;margin-bottom:14px}
+.phead .av{width:76px;height:76px;font-size:28px;margin:0 auto 10px}
+.gcard{display:flex;gap:14px;align-items:center;border-radius:16px;padding:16px;margin:0 20px 12px;color:#242832}
+.gcard span{font-size:34px}
+.gcard b{display:block}
+.gcard small{color:#4b5160}
+.soon{display:inline-block;background:#fff;border-radius:99px;font-size:12px;font-weight:600;padding:2px 8px;margin-top:4px}
+#gbar{display:flex;flex-direction:column;gap:6px}
+#gbar:not(:empty){padding:8px 12px;background:var(--surf);border-bottom:1px solid var(--line)}
+.gc{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--pale);border-radius:14px;padding:10px 12px;color:var(--text)}
+.gc>div{flex:1;min-width:120px}
+.gc small{display:block;color:var(--sub);font-size:12px}
+.gc .btn{height:40px;padding:0 14px;font-size:14px}
+.ttt{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:20px;max-width:340px;margin:0 auto}
+.ttt button{aspect-ratio:1;border-radius:16px;border:1.5px solid var(--line);background:var(--surf);font-size:44px;font-weight:700}
+.ttt button.x{color:var(--coral)}.ttt button.o{color:var(--blue)}
+.ttt button:not(:disabled):active{background:var(--peach)}
+.bs{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;padding:0 20px;max-width:380px;margin:6px auto}
+.bs>*{aspect-ratio:1;border:0;border-radius:5px;background:var(--pale);padding:0}
+.bs.sm{max-width:260px}
+.bs .hit{background:var(--coral)}.bs .miss{background:var(--line)}.bs .ship{background:var(--mint)}
+.av img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.gcard{cursor:pointer}
+.seg{display:flex;gap:6px;padding:4px 20px 10px}
+.cover{height:130px;background:var(--peach) center/cover no-repeat}
+.pp{padding:0 20px;margin-top:-38px}
+.pp .av{width:76px;height:76px;font-size:28px;border:4px solid var(--bg)}
+.stats{display:flex;gap:18px;margin:10px 0;font-size:14px;color:var(--sub)}
+.stats b{color:var(--text)}
+.post{background:var(--surf);border-bottom:1px solid var(--line);padding:14px 20px}
+.post .ph{display:flex;gap:10px;align-items:center;cursor:pointer}
+.post p{margin:10px 0;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+.post img,.post video,#cp-prev img,#cp-prev video{width:100%;max-height:440px;object-fit:cover;border-radius:14px;background:var(--line);display:block}
+.pa{display:flex;gap:16px;margin-top:6px}
+.pa button{background:none;border:0;color:var(--sub);font-size:14px;min-height:40px;padding:0}
+.pa .on{color:var(--coral);font-weight:700}
+.cm div{padding:5px 0;font-size:14px;line-height:1.4}
+.cm small{color:var(--sub)}
+#modal{display:none;position:absolute;inset:0;background:rgba(0,0,0,.45);align-items:flex-end;z-index:50}
+#modal.on{display:flex}
+.mbox{background:var(--surf);width:100%;padding:20px;border-radius:20px 20px 0 0;display:flex;flex-direction:column;gap:8px;padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+.av{position:relative}
+.av .dot{position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;background:#2BCB6F;border:2px solid var(--surf)}
+.vth{position:relative;border-radius:14px;overflow:hidden;background:#000;cursor:pointer}
+.vth video{width:100%;max-height:440px;display:block;object-fit:cover}
+.vth .play{position:absolute;inset:0;margin:auto;width:56px;height:56px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px}
+#v-reels{background:#0d0d10;position:relative;padding-top:0}
+#rl-list{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;overscroll-behavior:contain}
+.rl{height:100%;scroll-snap-align:start;scroll-snap-stop:always;position:relative;display:flex;align-items:center;justify-content:center;background:#0d0d10;color:#fff}
+.rl video,.rl img.m{width:100%;height:100%;object-fit:contain}
+.rl .rtxt{padding:80px 28px;font-size:26px;font-weight:700;line-height:1.3;text-align:center;overflow-wrap:anywhere}
+.rl .ov{position:absolute;left:0;right:0;bottom:0;padding:60px 84px calc(24px + env(safe-area-inset-bottom)) 16px;background:linear-gradient(transparent,rgba(0,0,0,.7));pointer-events:none}
+.rl .ov *{pointer-events:auto}
+.rl .ov p{margin-top:6px;line-height:1.4;font-size:15px;overflow-wrap:anywhere}
+.rl .side{position:absolute;right:10px;bottom:calc(96px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px;align-items:center}
+.rl .side button{background:none;border:0;color:#fff;display:flex;flex-direction:column;align-items:center;font-size:12px;font-weight:600;gap:2px;padding:0}
+.rl .side .ic{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:24px}
+.rl .side .on .ic{background:var(--coral)}
+.rl .side .av{width:48px;height:48px;border:2px solid #fff}
+.rbtn{position:absolute;top:calc(12px + env(safe-area-inset-top));z-index:5;width:44px;height:44px;border-radius:50%;border:0;background:rgba(0,0,0,.45);color:#fff;font-size:20px}
+.heart{position:absolute;font-size:96px;animation:pop .7s forwards;pointer-events:none;color:var(--coral)}
+@keyframes pop{0%{transform:scale(.3);opacity:1}60%{transform:scale(1.1);opacity:1}100%{transform:scale(1.5);opacity:0}}
+.cwrap{padding:10px 12px;perspective:1000px}
+.cap{font-size:13px;color:var(--sub);text-align:center;min-height:20px;padding:4px 0;letter-spacing:1px}
+.cframe{padding:10px;border-radius:14px;background:linear-gradient(145deg,#8a5a3b,#5e3a24);box-shadow:0 18px 30px rgba(0,0,0,.35),inset 0 2px 0 rgba(255,255,255,.25);max-width:420px;margin:6px auto;transform-style:preserve-3d;transition:transform .3s}
+.cframe.t3{transform:rotateX(26deg) scale(.96);transform-origin:50% 65%}
+.cb{display:grid;grid-template-columns:repeat(8,1fr);transform-style:preserve-3d;border-radius:4px}
+.cs{aspect-ratio:1;border:0;padding:0;position:relative;display:flex;align-items:center;justify-content:center;font-size:clamp(26px,9vw,42px);line-height:1;transform-style:preserve-3d}
+.cs.l{background:#f3dcc0}.cs.d{background:#b98560}
+.cs.last::before,.cs.sel::before{content:"";position:absolute;inset:0;background:rgba(52,120,246,.38)}
+.cs.sel::before{background:rgba(255,101,72,.6)}
+.cs.mv::after{content:"";position:absolute;width:28%;height:28%;border-radius:50%;background:rgba(36,40,50,.4)}
+.cs.cap::after{content:"";position:absolute;width:88%;height:88%;border-radius:50%;border:4px solid rgba(255,101,72,.75)}
+.cs.chk{box-shadow:inset 0 0 16px 8px rgba(200,62,72,.85)}
+.pc{position:relative;z-index:2;pointer-events:none;font-family:"Segoe UI Symbol","Noto Sans Symbols 2","DejaVu Sans",system-ui,sans-serif}
+.t3 .pc{transform:rotateX(-26deg) translateY(-8%)}
+.pc.w{color:#fff8ec;text-shadow:0 1px 0 #d8ccb5,0 2px 0 #bfb39b,0 3px 0 #a3977f,0 7px 8px rgba(0,0,0,.5)}
+.pc.b{color:#2c2433;text-shadow:0 1px 0 #17111c,0 2px 0 #0e0912,0 3px 0 #000,0 7px 8px rgba(0,0,0,.55)}
+.cs.last .pc{animation:drop .22s ease-out}
+@keyframes drop{from{opacity:.4;margin-top:-18px}to{opacity:1;margin-top:0}}
+.confetti{position:absolute;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+.confetti i{position:absolute;top:-14px;width:9px;height:14px;border-radius:2px;animation:fall 2s ease-in forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+[data-ic]{display:inline-flex;align-items:center;justify-content:center}
+.ico{display:block;flex:none}
+.ib,.send,.rbtn{display:flex;align-items:center;justify-content:center}
+.chip .ico{display:inline-block;vertical-align:-3px}
+.tk{display:inline-flex;vertical-align:-4px;margin-left:2px}
+.tk.rd{color:var(--blue)}
+.bigic{width:88px;height:88px;border-radius:50%;background:var(--peach);color:var(--coral);display:flex;align-items:center;justify-content:center}
+.setrow .soon{background:var(--pale);color:var(--blue-d);margin:0;white-space:nowrap}
+.nb{display:flex;align-items:center;gap:10px;margin:8px 20px 4px;padding:12px;border-radius:16px;background:var(--pale);color:var(--text)}
+.nb>div{flex:1}.nb small{display:block;color:var(--sub);font-size:12px;margin-top:2px}.nb .nbi{color:var(--blue)}
+.nb .btn.sm{height:38px;padding:0 14px}.nbx{border:0;background:none;color:var(--sub);width:32px;height:32px;display:flex;align-items:center;justify-content:center}
+.fvw{position:relative;flex:1;display:flex;flex-direction:column;min-height:0}
+.fvh{position:absolute;top:0;left:0;right:0;z-index:6;display:flex;align-items:center;justify-content:space-between;padding:6px 8px 20px;background:linear-gradient(rgba(0,0,0,.55),transparent);color:#fff}
+.fvh.solid{position:static;background:none;color:var(--text);padding-bottom:6px}
+.fvt{display:flex;gap:18px}
+.fvt button{background:none;border:0;color:inherit;opacity:.65;padding:8px 2px;border-bottom:3px solid transparent;font-size:16px;font-weight:700}
+.fvt button.on{opacity:1;border-bottom-color:var(--coral)}
+.fvb{width:44px;height:44px;border:0;background:none;color:inherit;display:flex;align-items:center;justify-content:center}
+.fvbody{flex:1;min-height:0;position:relative}
+.fvs{position:absolute;inset:0;overflow-y:scroll;scroll-snap-type:y mandatory;overscroll-behavior:contain;background:#0d0d10}
+.fvs .rl .side{bottom:22px}.fvs .rl .ov{padding-bottom:18px}
+.fpeople{position:absolute;inset:0;display:flex;flex-direction:column}
+.rl.txt{background:var(--coral)}
+.rl .side .ic{width:44px;height:44px;border-radius:0;background:none;filter:drop-shadow(0 1px 3px rgba(0,0,0,.55))}
+.rl .side .on .ic{background:none;color:var(--coral)}
+.rl .side button[data-a=rsave].on .ic{color:#F2B134}
+.rl .side .on .ic svg{animation:bnc .35s}
+@keyframes bnc{0%{transform:scale(.6)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+.rl .side .sav{position:relative;margin-bottom:10px}
+.rl .side .fol{position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);width:22px;height:22px;border-radius:50%;background:var(--coral);color:#fff;display:flex;align-items:center;justify-content:center}
+.rl .side span:not(.ic){text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.heart{position:absolute;width:96px;height:96px;font-size:0;color:var(--coral);pointer-events:none;z-index:4;transform:rotate(var(--rot,0deg));animation:hpop .85s ease-out forwards;filter:drop-shadow(0 4px 14px rgba(255,101,72,.55))}
+.heart>svg{width:96px;height:96px}
+.heart i{position:absolute;left:40px;top:40px;width:16px;height:16px;animation:hfloat .85s ease-out forwards}
+@keyframes hpop{0%{transform:rotate(var(--rot,0deg)) scale(.2);opacity:0}25%{transform:rotate(var(--rot,0deg)) scale(1.18);opacity:1}55%{transform:rotate(var(--rot,0deg)) scale(1);opacity:1}100%{transform:rotate(var(--rot,0deg)) translateY(-34px) scale(1.1);opacity:0}}
+@keyframes hfloat{to{transform:translate(var(--dx),var(--dy)) scale(.6);opacity:0}}
+.pc svg{width:88%;height:88%;filter:drop-shadow(0 3px 2px rgba(0,0,0,.45))}
+.ps.mini{width:15px;height:15px;vertical-align:middle}
+.wt{padding:8px 12px 20px}
+.wopp{display:flex;align-items:center;gap:4px;justify-content:center;flex-wrap:wrap;min-height:46px}
+.wopp small{flex:1 1 100%;text-align:center;color:var(--sub);font-size:12px}
+.wb{display:inline-block;width:26px;height:38px;border-radius:5px;background:#2457B8 repeating-linear-gradient(45deg,rgba(255,255,255,.18) 0 4px,transparent 4px 8px);border:2px solid #fff;box-shadow:0 2px 4px rgba(0,0,0,.3)}
+.wb.big{width:64px;height:92px;border-radius:9px}
+.wmid{display:flex;gap:26px;align-items:center;justify-content:center;margin:16px 0}
+.wmk{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--sub);font-size:12px}
+.wmk.can .wb{box-shadow:0 0 0 3px var(--coral),0 4px 10px rgba(0,0,0,.3)}
+.wtop{position:relative}
+.wtop .wf{width:84px;height:120px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
+.wtop.pop .wf{animation:wpop .3s ease-out}
+@keyframes wpop{from{transform:translateY(-50px) rotate(-14deg) scale(.8);opacity:0}to{transform:none;opacity:1}}
+.wwant{position:absolute;right:-12px;bottom:-8px;width:34px;height:34px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.whand{display:flex;overflow-x:auto;padding:20px 10px 10px;min-height:150px}
+.wc{flex:none;border:0;background:none;padding:0;margin-left:-20px;transition:transform .15s}
+.wc:first-child{margin-left:0}
+.wc .wf{width:68px;height:97px;filter:drop-shadow(0 3px 5px rgba(0,0,0,.3))}
+.wc.ok{transform:translateY(-14px)}
+.wc:disabled{opacity:1}
+.b{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.b.del{opacity:.75}
+.b .sn{display:block;font-size:12px;font-weight:700;color:var(--coral);margin-bottom:2px}
+.b .fw{font-size:11px;color:var(--sub);display:flex;align-items:center;gap:4px;margin-bottom:2px}
+.b .rq{border-left:3px solid var(--coral);background:rgba(0,0,0,.06);border-radius:6px;padding:4px 8px;margin-bottom:6px;font-size:13px}
+.b .rq b{display:block;font-size:12px}.b .rq span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:230px}
+.b.ch{max-width:100%;align-self:stretch;border-radius:14px;background:var(--in);border:1px solid var(--line)}
+.rxs{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.rxs button{border:1px solid var(--line);background:var(--surf);border-radius:99px;padding:1px 8px;font-size:13px;min-height:24px}
+.rxs button.me{border-color:var(--coral);background:var(--peach)}
+.vn{display:flex;align-items:center;gap:8px;min-width:220px}
+.vnp{width:36px;height:36px;border-radius:50%;border:0;background:var(--coral);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.vnbar{flex:1;height:5px;border-radius:3px;background:rgba(0,0,0,.15);overflow:hidden}.vnbar i{display:block;height:100%;width:0;background:var(--coral)}
+.vnt{font-size:12px;color:var(--sub);min-width:32px}
+.vns{border:0;background:rgba(0,0,0,.08);border-radius:99px;font-size:11px;font-weight:700;padding:2px 7px}
+.mimg{min-width:190px;min-height:130px;border-radius:12px;overflow:hidden;background:var(--line);display:flex;align-items:center;justify-content:center}
+.mimg img{display:block;max-width:250px;max-height:320px;width:100%;object-fit:cover;cursor:pointer}
+.mld{border:0;background:none;color:var(--sub);display:flex;flex-direction:column;align-items:center;gap:4px;font-size:13px;padding:30px 20px}
+.fil{display:flex;align-items:center;gap:10px;border:0;background:rgba(0,0,0,.06);border-radius:12px;padding:10px 12px;text-align:left;max-width:100%}
+.fil small{display:block;color:var(--sub);font-size:12px}.fil b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:190px;font-size:14px}
+.rbar{display:none}.rbar.on{display:block;padding:6px 12px 0;background:var(--surf);border-top:1px solid var(--line)}
+.rb{display:flex;align-items:center;gap:8px;border-left:3px solid var(--coral);background:var(--bg);border-radius:8px;padding:6px 10px}
+.rb>div{flex:1;min-width:0;font-size:13px}.rb span{display:block;color:var(--sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rb button{border:0;background:none;color:var(--sub);width:32px;height:32px;display:flex;align-items:center;justify-content:center}
+.ib2{width:40px;height:44px;border:0;background:none;color:var(--sub);display:flex;align-items:center;justify-content:center;flex:none}
+.comp .rec{display:none;align-items:center;gap:10px;flex:1;min-height:46px}
+.comp.recording>:not(.rec){display:none!important}.comp.recording .rec{display:flex}
+.rec .rdot{width:10px;height:10px;border-radius:50%;background:#E53935;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.25}}
+.rec span{flex:1;font-weight:600}
+.gnote{display:none;padding:14px;text-align:center;color:var(--sub);background:var(--surf);border-top:1px solid var(--line);font-size:14px}
+#gmsgs{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:3px}
+.msheet .act{display:flex;align-items:center;gap:12px;border:0;background:none;padding:12px 4px;font-size:16px;width:100%;text-align:left;color:var(--text)}
+.rxrow{display:flex;gap:6px;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.rxrow button{border:0;background:none;font-size:28px;padding:4px;border-radius:50%}
+.rxrow button.me{background:var(--peach)}
+#toast{position:absolute;left:16px;right:16px;bottom:90px;z-index:70;background:#242832;color:#fff;border-radius:12px;padding:12px 14px;font-size:14px;text-align:center;display:none}
+.mrow{display:flex;align-items:center;gap:10px;padding:6px 0}
+.mrow .tag{font-size:11px;font-weight:700;background:var(--pale);color:var(--blue-d);border-radius:99px;padding:2px 8px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gw" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fffdf8"/><stop offset="1" stop-color="#d9c8ab"/></linearGradient><linearGradient id="gb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6a5c78"/><stop offset="1" stop-color="#1b1522"/></linearGradient></defs></svg>
+<div id="app">
+
+<section class="v" id="v-setup"><div class="hero">
+  <div class="logo">gistly</div><h1>One last step</h1>
+  <p>Open <b>index.html</b>, find <b>PASTE YOUR SUPABASE DETAILS HERE</b> and add your project URL and key. Then reload.</p></div></section>
+
+<section class="v" id="v-welcome"><div class="hero">
+  <div class="logo"><svg width="34" height="34" viewBox="0 0 48 48"><path d="M24 4C12.4 4 4 12 4 22c0 5 2.2 9.4 5.8 12.6L8 44l9.200-4.400c2 .6 4.400.9 6.800.9 11.600 0 20-8 20-18S35.600 4 24 4z" fill="#FF6548"/><circle cx="16" cy="22" r="2.600" fill="#fff"/><circle cx="24" cy="22" r="2.600" fill="#fff"/><circle cx="32" cy="22" r="2.600" fill="#fff"/></svg>gistly</div>
+  <h1>Your people. Your language.</h1>
+  <p>Chat with friends using just a username. No phone number needed.</p>
+  <div class="blobs"><div style="background:var(--pale);color:#242832">How far?</div></div>
+  <div class="blobs" style="justify-content:flex-end"><div style="background:var(--peach);color:#242832">I dey! You?</div></div>
+  <button class="btn" id="w-new">Create account</button>
+  <button class="btn ghost" id="w-in">Log in</button>
+</div></section>
+
+<section class="v" id="v-auth"><div class="scroll pad">
+  <button class="chip" id="a-back" style="margin-top:14px"><i data-ic="back" data-s="16"></i> Back</button>
+  <h1 id="a-title" style="font-size:30px;letter-spacing:-1px;margin-top:16px"></h1>
+  <div id="a-name-wrap"><label for="a-name">Display name</label><input id="a-name" maxlength="40" autocomplete="name" placeholder="e.g. Godem"></div>
+  <label for="a-user">Username</label><input id="a-user" maxlength="20" autocapitalize="none" autocomplete="username" placeholder="letters, numbers, _">
+  <div class="err" id="a-user-msg"></div>
+  <label for="a-pass">Password</label>
+  <div style="position:relative"><input id="a-pass" type="password" placeholder="At least 6 characters" style="padding-right:64px">
+  <button id="a-eye" type="button" aria-label="Show password" style="position:absolute;right:4px;top:4px;height:42px;width:56px;border:0;background:none;color:var(--blue);font-weight:600;font-size:13px">Show</button></div>
+  <div class="err" id="a-err"></div>
+  <button class="btn" id="a-go" style="margin-top:8px"></button>
+  <p class="hint" id="a-hint"></p>
+  <button class="chip" id="a-forgot" type="button" style="margin-top:12px;display:none">Forgot password?</button>
+</div></section>
+
+<section class="v" id="v-main">
+  <div class="banner" id="offline">You're offline. Messages will send when you're back online.</div>
+  <div id="tab" style="flex:1;display:flex;flex-direction:column;min-height:0"></div>
+  <button class="fab" id="fab" aria-label="New chat">+</button>
+  <nav class="nav" id="nav">
+    <button data-t="chats"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.600 7.100L4 20l1-4.600A8 8 0 1 1 21 12z"/></svg>Chats</button>
+    <button data-t="games"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="11" rx="5"/><path d="M8 10v5M5.500 12.500h5M16 11h.01M18 14h.01"/></svg>Games</button>
+    <button data-t="discover"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>For you</button>
+    <button data-t="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Profile</button>
+  </nav>
+</section>
+
+<section class="v" id="v-chat">
+  <div class="chead"><button class="ib" id="c-back" aria-label="Back"><i data-ic="back"></i></button><div id="c-av"></div>
+  <div class="t"><b id="c-name"></b><span id="c-sub"></span></div><button class="ib" id="c-game" aria-label="Challenge to a game"><i data-ic="gamepad"></i></button></div>
+  <div class="banner" id="offline2">You're offline. Messages will send when you're back online.</div>
+  <div id="gbar"></div>
+  <div id="msgs" aria-live="polite"></div>
+  <div id="c-reply" class="rbar"></div>
+  <div class="comp"><button class="ib2" id="c-attach" aria-label="Attach a file"><i data-ic="clip"></i></button><textarea id="c-text" rows="1" placeholder="Type a message" aria-label="Message"></textarea><button class="send" id="c-mic" aria-label="Record a voice note"><i data-ic="mic" data-s="20"></i></button><button class="send" id="c-send" aria-label="Send" style="display:none"><i data-ic="send" data-s="20"></i></button><div class="rec"><i class="rdot"></i><span id="c-rt">0:00</span><button class="chip" id="c-rc">Cancel</button><button class="btn sm" id="c-rs">Send</button></div><input type="file" id="c-file" hidden accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip"></div>
+</section>
+
+<section class="v" id="v-game">
+  <div class="chead"><button class="ib" id="g-back" aria-label="Back"><i data-ic="back"></i></button><div class="t"><b id="g-title"></b><span id="g-sub"></span></div></div>
+  <div class="top"><h2 id="g-line" style="font-size:20px"></h2></div>
+  <div class="scroll" id="g-body"></div>
+</section>
+
+<section class="v" id="v-user">
+  <div class="chead"><button class="ib" id="u-back" aria-label="Back"><i data-ic="back"></i></button><div class="t"><b id="u-title"></b></div></div>
+  <div class="scroll" id="u-body"></div>
+</section>
+
+<section class="v" id="v-compose">
+  <div class="chead"><button class="ib" id="cp-back" aria-label="Cancel"><i data-ic="close"></i></button><div class="t"><b>New post</b></div><button class="btn sm" id="cp-go">Post</button></div>
+  <div class="scroll pad">
+    <textarea id="cp-text" rows="5" maxlength="1000" placeholder="What's on your mind?" style="margin-top:16px"></textarea>
+    <div class="err" id="cp-err"></div>
+    <div id="cp-prev" style="margin:10px 0"></div>
+    <button class="chip" id="cp-pick"><i data-ic="image" data-s="18"></i> Add photo or video</button><input type="file" id="cp-file" accept="image/*,video/*" hidden>
+    <p class="hint">Videos can be up to 15 MB. Your privacy setting decides who sees your posts.</p>
+  </div>
+</section>
+
+<section class="v" id="v-notifs">
+  <div class="chead"><button class="ib" id="nt-back" aria-label="Back"><i data-ic="back"></i></button><div class="t"><b>Notifications</b></div></div>
+  <div class="scroll" id="nt-body"></div>
+</section>
+
+<section class="v" id="v-admin">
+  <div class="chead"><button class="ib" id="ad-back" aria-label="Back"><i data-ic="back"></i></button><div class="t"><b>Admin: reports</b></div></div>
+  <div class="scroll" id="ad-body"></div>
+</section>
+
+<section class="v" id="v-banned"><div class="hero"><div class="logo">gistly</div><h1 id="bn-t"></h1><p id="bn-p"></p><button class="btn ghost" id="bn-out">Log out</button></div></section>
+
+<section class="v" id="v-code"><div class="hero"><div class="logo">gistly</div><h1>Save your recovery code</h1>
+  <p>If you ever forget your password, this code is the only way back in. Take a screenshot or write it down, and keep it private.</p>
+  <div id="cd-code" style="font:700 28px/1.2 ui-monospace,monospace;letter-spacing:1px;background:var(--pale);color:var(--text);padding:18px;border-radius:14px;text-align:center"></div>
+  <button class="btn ghost" id="cd-copy">Copy code</button><button class="btn" id="cd-ok">I have saved it</button></div></section>
+
+<section class="v" id="v-reset"><div class="scroll pad">
+  <button class="chip" id="r-back" style="margin-top:14px"><i data-ic="back" data-s="16"></i> Back</button>
+  <h1 style="font-size:30px;letter-spacing:-1px;margin-top:16px">Reset password</h1>
+  <label for="r-user">Username</label><input id="r-user" autocapitalize="none" autocomplete="username">
+  <label for="r-code">Recovery code</label><input id="r-code" autocapitalize="characters" placeholder="XXXX-XXXX-XXXX">
+  <label for="r-pass">New password</label><input id="r-pass" type="password" placeholder="At least 6 characters">
+  <div class="err" id="r-err"></div>
+  <button class="btn" id="r-go" style="margin-top:8px">Reset password</button>
+</div></section>
+<section class="v" id="v-reels"><button class="rbtn" id="rl-back" aria-label="Back" style="left:12px"><i data-ic="back"></i></button><button class="rbtn" id="rl-mute" aria-label="Sound" style="right:12px"></button><div id="rl-list"></div></section>
+<section class="v" id="v-group">
+  <div class="chead"><button class="ib" id="gr-back" aria-label="Back"><i data-ic="back"></i></button><div id="gr-av"></div><div class="t" id="gr-t" style="cursor:pointer"><b id="gr-name"></b><span id="gr-sub"></span></div></div>
+  <div id="gmsgs" aria-live="polite"></div>
+  <div id="g-reply" class="rbar"></div>
+  <div class="comp" id="g-comp"><button class="ib2" id="g-attach" aria-label="Attach a file"><i data-ic="clip"></i></button><textarea id="g-text" rows="1" placeholder="Type a message" aria-label="Message"></textarea><button class="send" id="g-mic" aria-label="Record a voice note"><i data-ic="mic" data-s="20"></i></button><button class="send" id="g-send" aria-label="Send" style="display:none"><i data-ic="send" data-s="20"></i></button><div class="rec"><i class="rdot"></i><span id="g-rt">0:00</span><button class="chip" id="g-rc">Cancel</button><button class="btn sm" id="g-rs">Send</button></div><input type="file" id="g-file" hidden accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip"></div>
+  <div class="gnote" id="g-note"></div>
+</section>
+
+<section class="v" id="v-ginfo">
+  <div class="chead"><button class="ib" id="gi-back" aria-label="Back"><i data-ic="back"></i></button><div class="t"><b>Info</b></div></div>
+  <div class="scroll" id="gi-body"></div>
+</section>
+
+<section class="v" id="v-gnew">
+  <div class="chead"><button class="ib" id="gn-back" aria-label="Back"><i data-ic="back"></i></button><div class="t"><b id="gn-title">New group</b></div><button class="btn sm" id="gn-go">Create</button></div>
+  <div class="scroll pad">
+    <label for="gn-name">Name</label><input id="gn-name" maxlength="60" placeholder="Give it a name">
+    <label for="gn-desc">Description (optional)</label><textarea id="gn-desc" rows="2" maxlength="300"></textarea>
+    <div id="gn-chan" style="display:none"><div class="setrow"><div>Public channel<small>Anyone can find and follow it. Turn off to share it by link only.</small></div><button class="tg on" id="gn-pub" role="switch" aria-label="Public channel"></button></div></div>
+    <div id="gn-mem"><label for="gn-q">Add people</label><input id="gn-q" placeholder="Search a username" autocapitalize="none"><div id="gn-res"></div><div id="gn-chips" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div></div>
+    <div class="err" id="gn-err"></div>
+  </div>
+</section>
+
+<section class="v" id="v-reqs">
+  <div class="chead"><button class="ib" id="rq-back" aria-label="Back"><i data-ic="back"></i></button><div class="t"><b>Message requests</b></div></div>
+  <div class="scroll pad" id="rq-body"></div>
+</section>
+
+<div id="toast" role="status"></div>
+<section class="v" id="v-perm"><div class="hero"><div class="bigic" data-ic="bell" data-s="44"></div><h1>Never miss a message</h1>
+  <p>Allow notifications so Gistly can ping you about new messages, followers and comments, even when the app is closed. You can change this anytime in settings.</p>
+  <button class="btn" id="pm-on">Allow notifications</button><button class="btn ghost" id="pm-skip">Not now</button></div></section>
+<div id="modal"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+/* ===== PASTE YOUR SUPABASE DETAILS HERE ===== */
+const SB_URL = "https://ppayqwyinhfzjouwfyps.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBwYXlxd3lpbmhmempvdXdmeXBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE5MjE4ODEsImV4cCI6MjEwNzQ5Nzg4MX0.MvS51sjisdB0W721ViXpUjjqy3HR1S5mCuUds_v6hYs"; // public key, safe in the app
+/* ============================================ */
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const IC = {
+  back:'<path d="M15 5l-7 7 7 7"/>', close:'<path d="M6 6l12 12M18 6L6 18"/>', plus:'<path d="M12 5v14M5 12h14"/>',
+  send:'<path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/>',
+  gamepad:'<rect x="2" y="6" width="20" height="12" rx="6"/><path d="M6.500 12h4M8.500 10v4"/><circle cx="16" cy="11" r=".8" fill="currentColor"/><circle cx="18" cy="13" r=".8" fill="currentColor"/>',
+  image:'<rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="9" cy="9" r="1.800"/><path d="M21 15l-5-5L5 21"/>',
+  bell:'<path d="M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.700 20a2 2 0 01-3.400 0"/>',
+  heart:'<path d="M12 21s-8.500-5-8.500-11.200A4.700 4.700 0 0112 7a4.700 4.700 0 018.500 2.800C20.500 16 12 21 12 21z"/>',
+  comment:'<path d="M21 11.500a8.500 8.500 0 01-12.300 7.600L3 20.500l1.500-5.300A8.500 8.500 0 1121 11.500z"/>',
+  bookmark:'<path d="M6 3.500h12a.5.5 0 01.5.5v17l-6.500-4.500L5.500 21V4a.5.5 0 01.5-.5z"/>',
+  share:'<path d="M14 4l7 7-7 7v-4.500C8 13.500 5 15.500 3 20c1-6.500 4.500-10.500 11-11.500z"/>',
+  more:'<circle cx="5" cy="12" r="1.900" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.900" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.900" fill="currentColor" stroke="none"/>',
+  play:'<path d="M8 5.500v13l11-6.500z" fill="currentColor" stroke="none"/>',
+  volume:'<path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.500 8.500a5 5 0 010 7M18.500 5.500a9 9 0 010 13"/>',
+  mute:'<path d="M11 5L6 9H3v6h3l5 4z"/><path d="M22 9l-6 6M16 9l6 6"/>',
+  pin:'<path d="M12 21s7-6.200 7-12a7 7 0 10-14 0c0 5.800 7 12 7 12z"/><circle cx="12" cy="9" r="2.500"/>',
+  check:'<path d="M5 12.500l4.500 4.500L19 7.500"/>', checks:'<path d="M2 13l4 4 9-10"/><path d="M11 16.500l1.500 1.500L22 7"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  flag:'<path d="M5 21V4M5 4h12l-2 4 2 4H5"/>', trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+  xmark:'<path d="M6 6l12 12M18 6L6 18" stroke-width="3"/>', omark:'<circle cx="12" cy="12" r="7.500" stroke-width="3"/>',
+  'g-ttt':'<path d="M9 3v18M15 3v18M3 9h18M3 15h18"/>',
+  'g-chess':'<path d="M7 20.500h11M8.500 20.500c0-4 1-5.500 2.500-8-1.500.300-2.500 1.200-4 2L5.500 12c2-1.500 4-4.500 5-7l1.500 1.500c4 .500 6.500 3.500 6.500 8v6"/>',
+  'g-whot':'<rect x="5" y="3" width="14" height="18" rx="2.500"/><path d="M12 7.500l1.300 2.700 2.900.4-2.100 2 .5 2.900-2.600-1.400-2.600 1.400.5-2.900-2.100-2 2.900-.4z"/>'
+};
+const ic = (n, s = 22, fill = false) => `<svg class="ico" width="${s}" height="${s}" viewBox="0 0 24 24" fill="${fill?'currentColor':'none'}" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||''}</svg>`;
+function paintIcons(r){ (r||document).querySelectorAll('[data-ic]').forEach(e => { e.innerHTML = ic(e.dataset.ic, +e.dataset.s || 22); }); }
+const COLORS = ['#C8F4DF','#FFE0D5','#E1ECFF'];
+const dotOf = p => online.has(p.id) ? '<i class="dot"></i>' : '';
+const avatar = (p, cls='') => p.avatar_url ? `<div class="av ${cls}"><img src="${esc(p.avatar_url)}" alt="" loading="lazy">${dotOf(p)}</div>` : `<div class="av ${cls}" style="background:${COLORS[(p.username||'a').charCodeAt(0)%3]}">${esc((p.display_name||p.username||'?')[0].toUpperCase())}${dotOf(p)}</div>`;
+const nameOf = p => p.display_name || p.username;
+const fmt = d => { d=new Date(d); const n=new Date(); return d.toDateString()===n.toDateString() ? d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : d.toLocaleDateString([], {day:'numeric',month:'short'}); };
+const low = () => localStorage.getItem('g-low') === '1';
+const getQ = () => { try { return JSON.parse(localStorage.getItem('g-q')||'[]'); } catch(e){ return []; } };
+const setQ = q => localStorage.setItem('g-q', JSON.stringify(q));
+const view = id => { document.querySelectorAll('video').forEach(v => v.pause()); try{ if(vn.a) vn.a.pause(); }catch(e){} document.querySelectorAll('.v').forEach(v => v.classList.remove('on')); $('#'+id).classList.add('on'); if(id==='v-main' || id==='v-reels') setTimeout(resumeVisible, 80); };
+
+let sb, me, cur = null, tab = 'chats', filter = 'all', mode = 'new', installEv = null, chan = null, started = false;
+const msgs = new Map(), profs = new Map(), online = new Set();
+
+const applyTheme = () => { const t = localStorage.getItem('g-theme') || 'system';
+  document.documentElement.dataset.theme = t === 'system' ? (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light') : t; };
+applyTheme();
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEv = e; });
+if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
+
+function boot(){
+  if(!SB_URL || !SB_KEY){ view('v-setup'); return; }
+  sb = supabase.createClient(SB_URL, SB_KEY);
+  sb.auth.getSession().then(({data}) => data.session ? enter() : view('v-welcome'));
+}
+
+/* ---------- Welcome & auth ---------- */
+$('#w-new').onclick = () => openAuth('new');
+$('#w-in').onclick = () => openAuth('in');
+$('#a-back').onclick = () => view('v-welcome');
+$('#a-eye').onclick = () => { const p=$('#a-pass'), s=p.type==='password'; p.type = s?'text':'password'; $('#a-eye').textContent = s?'Hide':'Show'; };
+
+function openAuth(m){
+  mode = m;
+  $('#a-title').textContent = m==='new' ? 'Create your account' : 'Welcome back';
+  $('#a-name-wrap').style.display = m==='new' ? 'block' : 'none';
+  $('#a-go').textContent = m==='new' ? 'Create account' : 'Log in';
+  $('#a-hint').textContent = m==='new' ? "There's no email, so passwords can't be reset yet. Choose one you'll remember." : '';
+  $('#a-forgot').style.display = m==='new' ? 'none' : 'inline-flex';
+  $('#a-pass').autocomplete = m==='new' ? 'new-password' : 'current-password';
+  $('#a-err').textContent = ''; $('#a-user-msg').textContent = '';
+  view('v-auth');
+}
+
+const cleanUser = s => (s||'').toLowerCase().replace(/[^a-z0-9_]/g,'');
+let chk;
+$('#a-user').addEventListener('input', e => {
+  const u = e.target.value = cleanUser(e.target.value), m = $('#a-user-msg');
+  clearTimeout(chk); m.className = 'err'; m.textContent = '';
+  if(mode!=='new' || !u || !sb) return;
+  if(u.length < 3){ m.textContent = 'Use at least 3 characters.'; return; }
+  chk = setTimeout(async () => {
+    const {data, error} = await sb.rpc('gistly_username_free', {n: u});
+    if(error) return;
+    m.className = data ? 'ok' : 'err'; m.textContent = data ? '✓ @'+u+' is available' : '@'+u+' is taken. Try another.';
+  }, 400);
+});
+
+$('#a-go').onclick = async () => {
+  const u = cleanUser($('#a-user').value), p = $('#a-pass').value, n = $('#a-name').value.trim(), err = $('#a-err');
+  err.textContent = '';
+  if(u.length < 3){ err.textContent = 'Username must be at least 3 characters.'; return; }
+  if(p.length < 6){ err.textContent = 'Password must be at least 6 characters.'; return; }
+  if(mode==='new' && !n){ err.textContent = 'Please add your display name.'; return; }
+  const b = $('#a-go'); b.disabled = true; b.textContent = 'Please wait…';
+  const email = u + '@gistly.app';
+  let r;
+  if(mode==='new'){
+    const f = await sb.functions.invoke('gistly-signup', {body: {username: u, password: p, name: n}});
+    if(f.error){
+      let msg = 'Could not create the account. Check your internet.';
+      try{ msg = (await f.error.context.json()).error || msg; }catch(e){}
+      b.disabled = false; b.textContent = 'Create account'; err.textContent = msg; return;
+    }
+  }
+  r = await sb.auth.signInWithPassword({email, password: p});
+  b.disabled = false; b.textContent = mode==='new' ? 'Create account' : 'Log in';
+  if(r.error){
+    err.textContent = /already|registered/i.test(r.error.message) ? 'That username is taken.' :
+      /invalid login/i.test(r.error.message) ? 'Wrong username or password.' : r.error.message;
+    return;
+  }
+  if(!r.data.session){ err.textContent = 'Account created, but Supabase needs "Confirm email" turned OFF (Authentication → Sign In / Providers → Email).'; return; }
+  if(mode==='new'){ const rc = await sb.functions.invoke('gistly-recover', {body:{action:'new-code'}}); showCode(rc.data && rc.data.code, () => askNotifs(() => enter())); }
+  else enter();
+};
+
+/* ---------- Load app ---------- */
+async function enter(){
+  const {data:{session}} = await sb.auth.getSession();
+  if(!session){ view('v-welcome'); return; }
+  const uid = session.user.id; let c = null;
+  try{ c = JSON.parse(localStorage.getItem('g-cache')||'null'); }catch(e){}
+  if(c && c.me && c.me.id === uid){
+    me = c.me; profs.set(me.id, me); (c.profs||[]).forEach(x => profs.set(x.id, x)); (c.msgs||[]).forEach(m => msgs.set(m.id, m));
+    view('v-main'); setTab('chats');
+  }
+  const {data, error} = await sb.from('gistly_profiles').select('*').eq('id', uid).maybeSingle();
+  if(data){ me = data; profs.set(me.id, me); }
+  else if(!me){ view('v-welcome'); alert(error ? 'No internet. Try again.' : 'Could not load your profile.'); if(!error) await sb.auth.signOut(); return; }
+  if(!$('#v-main').classList.contains('on')){ view('v-main'); setTab('chats'); }
+  if(await checkSanction()) return;
+  await Promise.all([loadMsgs(), loadGames(), loadFollowing(), loadBlocks(), checkAdmin(), loadNotifCount(), loadGroups(), loadExtras()]);
+  flush(); live(); liveGames(); liveNotifs(); liveGroups(); startPresence(); loadSaved(); ensurePush(); ping(); handleOpen(location.search);
+  if(!started){ started = true;
+    setInterval(ping, 60000);
+    addEventListener('online', () => { setOnline(); flush(); loadMsgs(); });
+    addEventListener('offline', setOnline);
+    setInterval(() => { if(me){ flush(); if(cur) status(); } }, 15000);
+  }
+  setOnline();
+}
+function setOnline(){ const o = !navigator.onLine; $('#offline').classList.toggle('on', o); $('#offline2').classList.toggle('on', o); }
+function ping(){ if(me && me.show_online !== false && navigator.onLine && !document.hidden) sb.from('gistly_profiles').update({last_seen: new Date().toISOString()}).eq('id', me.id).then(()=>{}); }
+
+async function loadMsgs(){
+  const {data} = await sb.from('gistly_messages').select('*').or(`sender.eq.${me.id},receiver.eq.${me.id}`)
+    .order('created_at', {ascending:false}).limit(low()?60:300);
+  (data||[]).forEach(m => msgs.set(m.id, applyRA(m)));
+  const ids = [...new Set((data||[]).flatMap(m => [m.sender, m.receiver]))].filter(i => i !== me.id);
+  if(ids.length){ const {data:ps} = await sb.from('gistly_profiles').select('*').in('id', ids); (ps||[]).forEach(p => profs.set(p.id, p)); }
+  refresh(); saveCache(); markDelivered(); resyncRead();
+}
+
+function live(){
+  if(chan) sb.removeChannel(chan);
+  chan = sb.channel('gistly-msgs').on('postgres_changes', {event:'*', schema:'public', table:'gistly_messages'}, async pl => {
+    const m = pl.new; if(!m || !m.id) return;
+    msgs.set(m.id, applyRA(m));
+    if(pl.eventType === 'INSERT' && m.receiver === me.id){ markDelivered(); if(cur && cur.id === m.sender && navigator.vibrate) navigator.vibrate(25); }
+    const other = m.sender === me.id ? m.receiver : m.sender;
+    if(!profs.has(other)){ const {data} = await sb.from('gistly_profiles').select('*').eq('id', other).maybeSingle(); if(data) profs.set(other, data); }
+    if(cur && other === cur.id && m.receiver === me.id && !m.read_at) markRead();
+    refresh();
+  }).subscribe();
+}
+
+function convos(){
+  const map = new Map();
+  [...msgs.values()].sort((a,b) => new Date(a.created_at)-new Date(b.created_at)).forEach(m => {
+    const o = m.sender === me.id ? m.receiver : m.sender;
+    const c = map.get(o) || {id:o, last:null, unread:0};
+    c.last = m; if(m.receiver === me.id && !m.read_at && !hidden.has(m.id)) c.unread++;
+    map.set(o, c);
+  });
+  getQ().forEach(q => { const c = map.get(q.receiver) || {id:q.receiver, last:null, unread:0}; c.last = {body:q.body, created_at:q.created_at, sender:me.id, kind:'text'}; map.set(q.receiver, c); });
+  return [...map.values()].filter(c => profs.has(c.id) && c.last).sort((a,b) => new Date(b.last.created_at)-new Date(a.last.created_at));
+}
+
+function refresh(){ if(cur) renderChat(); if(grpCur && $('#v-group').classList.contains('on')) renderGroup(); if($('#v-main').classList.contains('on')){ if(tab==='chats') renderChats(); if(tab==='games') renderGames(); } }
+
+/* ---------- Tabs ---------- */
+$('#nav').onclick = e => { const b = e.target.closest('button'); if(b) setTab(b.dataset.t); };
+$('#fab').onclick = openNewMenu;
+function setTab(t){
+  document.querySelectorAll('video').forEach(v => v.pause());
+  tab = t; if(t !== 'games') gStartG = null;
+  document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  $('#fab').style.display = t === 'chats' ? 'block' : 'none';
+  ({chats:renderChats, games:renderGames, discover:renderDiscover, profile:renderProfile})[t]();
+}
+
+function renderChats(){
+  const t = $('#tab');
+  if(!$('#cl')){
+    t.innerHTML = `<div class="top"><div class="logo" style="flex:1">gistly</div><button id="bell" aria-label="Notifications" style="position:relative;width:44px;height:44px;border:0;background:none;color:var(--text);display:flex;align-items:center;justify-content:center">${ic('bell',26)}<span id="bell-n" class="badge" style="position:absolute;top:2px;right:0;display:none"></span></button></div>
+    <div class="pad"><input id="q" placeholder="Search your chats" aria-label="Search chats"></div><div id="nbar"></div>
+    <div class="chips"><button class="chip" data-f="all">All chats</button><button class="chip" data-f="unread">Unread</button></div>
+    <div class="scroll" id="cl"></div>`;
+    $('#q').oninput = renderChats; $('#bell').onclick = openNotifs; updateBell(); paintNBar();
+    t.querySelector('.chips').onclick = e => { const b = e.target.closest('.chip'); if(b){ filter = b.dataset.f; renderChats(); } };
+  }
+  t.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c.dataset.f === filter));
+  const q = ($('#q').value||'').toLowerCase(), req = new Set(requestIds()), declined = new Set([...allow].filter(([k,v]) => v === 'declined').map(([k]) => k));
+  let items = convos().filter(c => !req.has(c.id) && !(declined.has(c.id) && !c.last.mine)).map(c => ({t:'dm', id:c.id, p:profs.get(c.id), last:c.last, unread:c.unread, time:c.last.created_at}));
+  items = items.concat(groupItems());
+  items = items.filter(x => (filter==='all' || x.unread) && (!q || (x.t==='dm' ? (x.p.username + nameOf(x.p)) : x.g.name).toLowerCase().includes(q))).sort((a,b) => new Date(b.time)-new Date(a.time));
+  const box = $('#cl');
+  const reqRow = req.size ? `<button class="row" data-req="1"><div class="av" style="background:var(--pale);color:var(--blue-d)">${ic('comment',22)}</div><div class="mid"><div class="nm">Message requests</div><div class="pv">${req.size} waiting for your approval</div></div><span class="badge">${req.size}</span></button>` : '';
+  if(!items.length && !reqRow){ box.innerHTML = `<div class="empty"><b>${filter==='unread'?'Nothing unread':'No chats yet'}</b>Tap the + button to start a chat, a group or a channel.</div>`; return; }
+  box.innerHTML = reqRow + items.map(x => {
+    if(x.t === 'g'){ const g = x.g, l = x.last, pre = l ? ((l.sender===me.id ? 'You: ' : (g.kind==='group' ? nameFor(l.sender) + ': ' : '')) + previewOf(l)) : 'No messages yet';
+      return `<button class="row" data-gid="${g.id}">${groupAvatar(g)}<div class="mid"><div class="nm">${esc(g.name)}</div><div class="pv">${esc(pre)}</div></div><div class="tm">${fmt(x.time)}${x.unread?`<br><span class="badge">${x.unread}</span>`:''}</div></button>`; }
+    const p = x.p, mine = x.last.sender === me.id;
+    return `<button class="row" data-id="${x.id}">${avatar(p)}<div class="mid"><div class="nm">${esc(nameOf(p))}</div><div class="pv">${mine?'You: ':''}${esc(previewOf(x.last))}</div></div>
+    <div class="tm">${fmt(x.time)}${x.unread?`<br><span class="badge">${x.unread}</span>`:''}</div></button>`; }).join('');
+  box.onclick = e => { const r = e.target.closest('.row'); if(!r) return; if(r.dataset.req) openRequests(); else if(r.dataset.gid) openGroup(r.dataset.gid); else openChat(profs.get(r.dataset.id)); };
+}
+
+let dt;
+let feedTab = 'posts';
+function paintMute(){ const h = ic(rlMuted ? 'mute' : 'volume', 22), a = $('#rl-mute'), b = $('#fvm'); if(a) a.innerHTML = h; if(b) b.innerHTML = h; }
+function toggleMute(){ rlMuted = !rlMuted; paintMute(); document.querySelectorAll('video').forEach(v => v.muted = rlMuted); }
+function renderDiscover(){
+  const solid = feedTab === 'people' || feedTab === 'channels';
+  $('#tab').innerHTML = `<div class="fvw"><div class="fvh ${solid?'solid':''}"><button class="fvb" id="fvm" aria-label="Sound"></button><div class="fvt" style="gap:12px">${[['posts','For you'],['following','Following'],['channels','Channels'],['people','People']].map(([k,l]) => `<button class="${feedTab===k?'on':''}" data-k="${k}" style="font-size:15px">${l}</button>`).join('')}</div><button class="fvb" id="np" aria-label="New post">${ic('plus',26)}</button></div><div id="fx" class="fvbody"></div></div>`;
+  paintMute(); $('#np').onclick = openCompose; $('#fvm').onclick = toggleMute;
+  document.querySelector('.fvt').onclick = e => { const b = e.target.closest('[data-k]'); if(b){ feedTab = b.dataset.k; renderDiscover(); } };
+  if(feedTab === 'people'){
+    $('#fx').innerHTML = '<div class="fpeople"><div class="pad"><input id="ds" placeholder="Search a username" autocapitalize="none" aria-label="Search username"></div><div class="scroll" id="dr"></div></div>';
+    $('#ds').oninput = e => { const v = e.target.value = cleanUser(e.target.value); clearTimeout(dt); dt = setTimeout(() => v ? search(v) : suggest(), 300); };
+    suggest();
+  } else if(feedTab === 'channels'){
+    $('#fx').innerHTML = '<div class="fpeople"><div class="scroll" id="dr"></div></div>'; loadChannels();
+  } else loadFeed();
+}
+async function loadChannels(){
+  const box = $('#dr'); if(!box) return; box.innerHTML = '<div class="empty">Loading…</div>';
+  const {data, error} = await sb.rpc('gistly_public_channels');
+  if(error){ box.innerHTML = '<div class="empty"><b>Could not load channels</b>Check your internet and try again.</div>'; return; }
+  if(!data.length){ box.innerHTML = '<div class="empty"><b>No channels yet</b>Start one from the + button on the Chats tab.</div>'; return; }
+  box.innerHTML = data.map(c => `<button class="row" data-id="${c.id}"><div class="av" style="background:#E1ECFF;color:#242832">${ic('megaphone',20)}</div><div class="mid"><div class="nm">${esc(c.name)}</div><div class="pv">${c.followers} follower${c.followers==1?'':'s'}${c.description ? ' · ' + esc(c.description) : ''}</div></div><span class="chip ${c.joined?'':'on'}" style="min-height:36px;padding:6px 14px">${c.joined?'Open':'Follow'}</span></button>`).join('');
+  box.onclick = async e => { const r = e.target.closest('.row'); if(!r) return; const c = data.find(x => x.id === r.dataset.id);
+    if(!c.joined){ const {error:er} = await sb.rpc('gistly_join', {gid:c.id}); if(er){ toast('Could not follow.'); return; } await loadGroups(); }
+    openGroup(c.id); };
+}
+function emptyFeed(t, sub){
+  const box = $('#fx'); if(!box) return; const h = document.querySelector('.fvh'); if(h) h.classList.add('solid');
+  box.innerHTML = `<div class="empty"><b>${t}</b>${sub}<br><button class="btn sm" id="np2" style="margin-top:16px">New post</button></div>`; $('#np2').onclick = openCompose;
+}
+async function loadFeed(){
+  const box = $('#fx'); if(!box) return;
+  if(feedTab === 'following' && !following.size){ emptyFeed('You are not following anyone yet', 'Follow people from the People tab to see their posts here.'); return; }
+  const h = document.querySelector('.fvh'); if(h) h.classList.add('solid'); box.innerHTML = '<div class="empty">Loading…</div>';
+  const list = await postList(feedTab === 'following' ? [...following] : null);
+  if(!$('#fx')) return;
+  if(list === null){ emptyFeed('Could not load posts', 'Check your internet and try again.'); return; }
+  if(!list.length){ emptyFeed('No posts available yet', 'Be the first to share something.'); return; }
+  document.querySelector('.fvh').classList.remove('solid'); rlPosts = list;
+  box.innerHTML = '<div class="fvs" id="fv">' + list.map(reelItem).join('') + '<div class="rl txt"><div class="rtxt">You are all caught up</div></div></div>';
+  const fv = $('#fv'); fv.onclick = reelClick; observeReels(fv);
+}
+const personRow = p => { const on = online.has(p.id);
+  return `<button class="row" data-id="${p.id}">${avatar(p)}<div class="mid"><div class="nm">${esc(nameOf(p))}${on ? ' <span style="color:var(--ok);font-size:12px;font-weight:600">● online</span>' : ''}</div><div class="pv">@${esc(p.username)}${p.location ? ' · ' + ic('pin',12) + esc(p.location) : ''}</div>${p.bio ? `<div class="pv">${esc(p.bio)}</div>` : ''}</div><span class="chip on" style="min-height:36px;padding:6px 14px">View</span></button>`; };
+function bindPeople(box){ box.onclick = e => { const r = e.target.closest('.row'); if(r) openUser(r.dataset.id); }; }
+async function suggest(){
+  const box = $('#dr'); if(!box) return;
+  box.innerHTML = '<div class="empty">Finding people…</div>';
+  const {data, error} = await sb.from('gistly_profiles').select('*').eq('discoverable', true).neq('id', me.id).order('last_seen', {ascending:false}).limit(40);
+  if(error){ box.innerHTML = '<div class="empty"><b>Could not load people</b>Check your internet and try again.</div>'; return; }
+  const chatted = new Set(convos().map(c => c.id));
+  const list = (data||[]).filter(p => !chatted.has(p.id) && !blocked.has(p.id));
+  if(!list.length){ box.innerHTML = '<div class="empty"><b>No new people yet</b>When more people join Gistly, they will show up here.</div>'; return; }
+  list.forEach(p => profs.set(p.id, p));
+  box.innerHTML = '<div class="sec" style="margin-top:4px">People you may like to chat with</div>' + list.map(personRow).join('');
+  bindPeople(box);
+}
+async function search(v){
+  const box = $('#dr'); if(!box) return;
+  box.innerHTML = '<div class="empty">Searching…</div>';
+  const {data, error} = await sb.from('gistly_profiles').select('*').ilike('username', v+'%').neq('id', me.id).order('username').limit(15);
+  if(error){ box.innerHTML = '<div class="empty"><b>Could not search</b>Check your internet and try again.</div>'; return; }
+  if(!data.length){ box.innerHTML = `<div class="empty"><b>No one found</b>Nobody has a username starting with "${esc(v)}" yet.</div>`; return; }
+  data.forEach(p => profs.set(p.id, p));
+  box.innerHTML = data.map(personRow).join(''); bindPeople(box);
+}
+
+function renderProfile(){
+  $('#tab').innerHTML = '<div class="scroll" id="mp"></div>';
+  userPage(me, $('#mp'), true);
+}
+function renderSettings(){
+  const th = localStorage.getItem('g-theme') || 'system';
+  $('#tab').innerHTML = `<div class="top"><button class="chip" id="s-back">${ic('back',16)} Back</button><h2 style="font-size:20px">Edit profile and settings</h2></div><div class="scroll"><div class="phead">${avatar(me)}<h2>${esc(nameOf(me))}</h2><div class="hint">@${esc(me.username)}</div><div style="display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap"><button class="chip" id="p-photo">Change photo</button><button class="chip" id="p-cover">Change cover</button></div><input type="file" id="p-file" accept="image/*" hidden><input type="file" id="p-cfile" accept="image/*" hidden></div>
+  <div class="card"><label for="p-name" style="margin-top:0">Display name</label><input id="p-name" maxlength="40" value="${esc(me.display_name)}">
+  <label for="p-loc">Where are you from?</label><input id="p-loc" maxlength="40" value="${esc(me.location||'')}" placeholder="e.g. Awka, Nigeria">
+  <label for="p-bio">Short bio</label><textarea id="p-bio" rows="2" maxlength="160">${esc(me.bio)}</textarea>
+  <div class="ok" id="p-ok"></div><button class="btn sm" id="p-save" style="margin-top:10px">Save profile</button></div>
+  <div class="sec">Appearance</div><div class="card"><div class="setrow"><span>Theme</span><select id="p-th" style="width:auto;height:44px"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div>
+  <div class="sec">Privacy</div><div class="card"><div class="setrow"><div>Suggest me to new people<small>Show me on the "For you" page. People can still find you by username.</small></div><button class="tg ${me.discoverable!==false?'on':''}" id="p-disc" role="switch" aria-checked="${me.discoverable!==false}" aria-label="Suggest me to new people"></button></div><div class="setrow"><div>Show when I'm online<small>Off hides your green dot and last seen.</small></div><button class="tg ${me.show_online!==false?'on':''}" id="p-onl" role="switch" aria-checked="${me.show_online!==false}" aria-label="Show when I am online"></button></div><div class="setrow"><div>Who can message you<small>Strangers can send one request first.</small></div><select id="p-dm" style="width:auto;height:44px"><option value="everyone">Everyone</option><option value="approved">Only people I approve</option></select></div></div>
+  <div class="card" style="margin-top:-6px"><div class="setrow"><div>Only my followers see my posts<small>Off means everyone can see your posts.</small></div><button class="tg ${me.posts_audience==='followers'?'on':''}" id="p-aud" role="switch" aria-checked="${me.posts_audience==='followers'}" aria-label="Only my followers see my posts"></button></div></div>
+  <div class="sec">Data and storage</div><div class="card"><div class="setrow"><div>Low-data mode<small>Loads less chat history at a time. Messages you send offline are saved and sent when you're back online.</small></div><button class="tg ${low()?'on':''}" id="p-low" role="switch" aria-checked="${low()}" aria-label="Low-data mode"></button></div></div>
+  <div class="sec">Notifications</div><div class="card"><div class="setrow"><div>Phone notifications<small id="n-st">Get a ping when something happens, even when the app is closed.</small></div><button class="btn sm" id="n-on">Turn on</button></div>${[['message','New messages'],['follow','New followers'],['post','Posts from people I follow'],['comment','Comments on my posts']].map(([k,l]) => `<div class="setrow"><span>${l}</span><button class="tg ${(me.notif_prefs||{})[k]!==false?'on':''}" data-pk="${k}" role="switch" aria-checked="${(me.notif_prefs||{})[k]!==false}" aria-label="${l}"></button></div>`).join('')}</div>
+  <div class="sec">Blocked people</div><div class="card" id="bl-list"></div>
+  <div class="sec">Account</div><div class="card"><div class="setrow"><div>Recovery code<small>Lets you reset your password if you forget it.</small></div><button class="btn ghost sm" id="rc-new">Get code</button></div>${isAdmin ? `<div class="setrow"><div>Admin<small>Review reports</small></div><button class="btn sm" id="ad-open">Reports (${openReports})</button></div>` : ''}<div class="setrow"><div style="color:var(--err)">Delete my account<small>This cannot be undone.</small></div><button class="btn ghost sm" id="del-acc" style="color:var(--err)">Delete</button></div></div>
+  <div class="sec">App</div><div class="card"><div class="setrow"><div>Install Gistly<small id="p-inst-t">Add Gistly to your home screen</small></div><button class="btn sm" id="p-inst">Install</button></div></div>
+  <div class="card"><button class="btn ghost" id="p-out" style="color:var(--err)">Log out</button></div></div>`;
+  $('#p-th').value = th;
+  $('#s-back').onclick = renderProfile; bindSettingsExtras();
+  $('#p-photo').onclick = () => $('#p-file').click();
+  $('#p-cover').onclick = () => $('#p-cfile').click();
+  $('#p-aud').onclick = async e => { const f = me.posts_audience !== 'followers';
+    const {error} = await sb.from('gistly_profiles').update({posts_audience: f ? 'followers' : 'everyone'}).eq('id', me.id);
+    if(!error){ me.posts_audience = f ? 'followers' : 'everyone'; e.target.classList.toggle('on', f); e.target.setAttribute('aria-checked', f); } };
+  $('#p-cfile').onchange = async e => {
+    const f = e.target.files[0]; if(!f) return;
+    const st = $('#p-ok'); st.className = 'hint'; st.textContent = 'Uploading cover…';
+    try{
+      const bmp = await createImageBitmap(f), W = 1000, H = 400, c = document.createElement('canvas'); c.width = W; c.height = H;
+      const sc = Math.max(W/bmp.width, H/bmp.height), w = bmp.width*sc, h = bmp.height*sc;
+      c.getContext('2d').drawImage(bmp, (W-w)/2, (H-h)/2, w, h);
+      const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .82)), path = me.id + '/cover.jpg';
+      const up = await sb.storage.from('gistly-avatars').upload(path, blob, {upsert:true, contentType:'image/jpeg', cacheControl:'3600'});
+      if(up.error) throw up.error;
+      const url = sb.storage.from('gistly-avatars').getPublicUrl(path).data.publicUrl + '?v=' + Date.now();
+      const r2 = await sb.from('gistly_profiles').update({cover_url:url}).eq('id', me.id);
+      if(r2.error) throw r2.error;
+      me.cover_url = url; renderSettings(); $('#p-ok').className = 'ok'; $('#p-ok').textContent = '✓ Cover updated';
+    }catch(err){ st.className = 'err'; st.textContent = 'Could not upload that cover. Try another picture.'; }
+  };
+  $('#p-disc').onclick = async e => { const on = me.discoverable === false;
+    const {error} = await sb.from('gistly_profiles').update({discoverable:on}).eq('id', me.id);
+    if(!error){ me.discoverable = on; e.target.classList.toggle('on', on); e.target.setAttribute('aria-checked', on); } };
+  $('#p-file').onchange = async e => {
+    const f = e.target.files[0]; if(!f) return;
+    const st = $('#p-ok'); st.className = 'hint'; st.textContent = 'Uploading photo…';
+    try{
+      const bmp = await createImageBitmap(f), S = 256, c = document.createElement('canvas'); c.width = c.height = S;
+      const m = Math.min(bmp.width, bmp.height);
+      c.getContext('2d').drawImage(bmp, (bmp.width-m)/2, (bmp.height-m)/2, m, m, 0, 0, S, S);
+      const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .85));
+      const path = me.id + '/avatar.jpg';
+      const up = await sb.storage.from('gistly-avatars').upload(path, blob, {upsert:true, contentType:'image/jpeg', cacheControl:'3600'});
+      if(up.error) throw up.error;
+      const url = sb.storage.from('gistly-avatars').getPublicUrl(path).data.publicUrl + '?v=' + Date.now();
+      const r2 = await sb.from('gistly_profiles').update({avatar_url:url}).eq('id', me.id);
+      if(r2.error) throw r2.error;
+      me.avatar_url = url; renderSettings();
+      $('#p-ok').className = 'ok'; $('#p-ok').textContent = '✓ Photo updated';
+    }catch(err){ st.className = 'err'; st.textContent = 'Could not upload that photo. Try another one.'; }
+  };
+  $('#p-th').onchange = e => { localStorage.setItem('g-theme', e.target.value); applyTheme(); };
+  $('#p-low').onclick = e => { const on = !low(); localStorage.setItem('g-low', on?'1':'0'); e.target.classList.toggle('on', on); e.target.setAttribute('aria-checked', on); };
+  $('#p-save').onclick = async () => {
+    const n = $('#p-name').value.trim(), b = $('#p-bio').value.trim(), loc = $('#p-loc').value.trim();
+    if(!n){ $('#p-ok').className='err'; $('#p-ok').textContent='Display name cannot be empty.'; return; }
+    const {error} = await sb.from('gistly_profiles').update({display_name:n, bio:b, location:loc}).eq('id', me.id);
+    $('#p-ok').className = error ? 'err' : 'ok'; $('#p-ok').textContent = error ? 'Could not save. Try again.' : '✓ Saved';
+    if(!error){ me.display_name = n; me.bio = b; me.location = loc; }
+  };
+  $('#p-inst').onclick = async () => {
+    if(installEv){ installEv.prompt(); installEv = null; }
+    else $('#p-inst-t').textContent = 'In Chrome, tap the ⋮ menu, then "Add to Home screen" or "Install app".';
+  };
+  $('#p-out').onclick = async () => { if(confirm('Log out of Gistly?')){ await sb.auth.signOut(); localStorage.removeItem('g-q'); localStorage.removeItem('g-cache'); location.reload(); } };
+}
+
+/* ---------- Chat ---------- */
+let shown = 0;
+function openChat(p){
+  cur = p; replyTo = null; shown = low() ? 30 : 100;
+  $('#c-av').innerHTML = avatar(p, 'sm');
+  $('#c-name').textContent = nameOf(p);
+  view('v-chat'); renderChat(true); markRead(); paintReply();
+  $('#c-text').focus();
+}
+$('#c-av').onclick = () => cur && openUser(cur.id);
+$('#c-name').parentElement.onclick = () => cur && openUser(cur.id);
+$('#c-back').onclick = () => { cur = null; view('v-main'); setTab('chats'); };
+
+function status(){
+  if(!cur) return;
+  const p = profs.get(cur.id) || cur, typing = Date.now() - (typingFrom.get(cur.id)||0) < 3000, on = online.has(cur.id);
+  $('#c-sub').textContent = typing ? 'typing…' : on ? 'online' : (p.show_online === false ? '' : 'last seen ' + fmt(p.last_seen));
+  $('#c-sub').style.color = (on || typing) ? 'var(--ok)' : '';
+}
+
+function renderChat(toEnd){
+  status(); renderGBar();
+  const box = $('#msgs'), atEnd = toEnd || box.scrollHeight - box.scrollTop - box.clientHeight < 120;
+  const all = [...msgs.values()].filter(m => ((m.sender===cur.id && m.receiver===me.id) || (m.sender===me.id && m.receiver===cur.id)) && !hidden.has(m.id));
+  const q = getQ().filter(x => x.receiver === cur.id).map(x => ({id:x.client_id, sender:me.id, body:x.body, kind:'text', reply_to:x.reply_to, fwd:x.fwd, created_at:x.created_at, queued:true}));
+  const list = [...all, ...q].sort((a,b) => new Date(a.created_at)-new Date(b.created_at));
+  const vis = list.slice(-shown);
+  let prev = null, html = list.length > vis.length ? '<button class="more" id="more">Load earlier messages</button>' : '';
+  html += vis.map(m => { const first = !prev || prev.sender !== m.sender || new Date(m.created_at)-new Date(prev.created_at) > 120000; prev = m; return bubble(m, {mine:m.sender === me.id, first}); }).join('');
+  if(!list.length) html = `<div class="empty"><b>Say hello</b>Your messages with ${esc(nameOf(cur))} will show here.</div>`;
+  box.innerHTML = html; hydrateMedia(box);
+  const mb = $('#more'); if(mb) mb.onclick = async () => { shown += low()?30:100; renderChat(); await olderFromServer(); };
+  if(atEnd) box.scrollTop = box.scrollHeight;
+}
+
+async function olderFromServer(){
+  const mine = [...msgs.values()].filter(m => (m.sender===cur.id&&m.receiver===me.id)||(m.sender===me.id&&m.receiver===cur.id));
+  const oldest = mine.reduce((a,m) => !a || m.created_at < a ? m.created_at : a, null);
+  if(!oldest || !navigator.onLine) return;
+  const {data} = await sb.from('gistly_messages').select('*').or(`and(sender.eq.${me.id},receiver.eq.${cur.id}),and(sender.eq.${cur.id},receiver.eq.${me.id})`)
+    .lt('created_at', oldest).order('created_at', {ascending:false}).limit(low()?30:100);
+  if(data && data.length){ data.forEach(m => msgs.set(m.id, m)); renderChat(); }
+}
+
+const getRA = () => { try{ return JSON.parse(localStorage.getItem('g-ra')||'{}'); }catch(e){ return {}; } };
+function applyRA(m){
+  if(me && m.receiver === me.id && !m.read_at){ const t = getRA()[m.sender]; if(t && new Date(m.created_at) <= new Date(t)){ m.read_at = t; m._pend = true; } }
+  return m;
+}
+async function syncRead(peer, t){
+  if(!navigator.onLine || !t) return;
+  const {error} = await sb.from('gistly_messages').update({read_at:t}).eq('receiver', me.id).eq('sender', peer).is('read_at', null).lte('created_at', t);
+  if(!error) msgs.forEach(m => { if(m.sender === peer) delete m._pend; });
+}
+function resyncRead(){ const ps = new Set(); msgs.forEach(m => { if(m._pend) ps.add(m.sender); }); const ra = getRA(); ps.forEach(x => syncRead(x, ra[x])); }
+async function markRead(){
+  if(!cur) return;
+  const t = new Date().toISOString(), ra = getRA(); ra[cur.id] = t; localStorage.setItem('g-ra', JSON.stringify(ra));
+  msgs.forEach(m => { if(m.sender === cur.id && m.receiver === me.id && !m.read_at){ m.read_at = t; m._pend = true; } });
+  refresh(); saveCache(); syncRead(cur.id, t);
+}
+let dBusy = false, dAgain = false;
+async function markDelivered(){
+  if(!navigator.onLine || !me) return; if(dBusy){ dAgain = true; return; } dBusy = true;
+  try{ await sb.from('gistly_messages').update({delivered_at:new Date().toISOString()}).eq('receiver', me.id).is('delivered_at', null); }
+  finally{ dBusy = false; if(dAgain){ dAgain = false; markDelivered(); } }
+}
+
+const ta = $('#c-text');
+
+let flushing = false;
+async function flush(){
+  if(flushing || !navigator.onLine || !me) return; flushing = true;
+  try{
+    for(const item of getQ()){
+      const {data, error} = await sb.from('gistly_messages').upsert(
+        {client_id:item.client_id, sender:me.id, receiver:item.receiver, body:item.body, created_at:item.created_at, reply_to:item.reply_to||null, fwd:!!item.fwd},
+        {onConflict:'client_id', ignoreDuplicates:true}).select();
+      if(error){ if(/Slow down|violates/i.test(error.message)){ setQ(getQ().filter(x => x.client_id !== item.client_id)); toast(/row-level/i.test(error.message) ? 'They only accept messages from people they approve. Your first message is waiting for them.' : 'Slow down a little.'); } else break; }
+      else { setQ(getQ().filter(x => x.client_id !== item.client_id)); (data||[]).forEach(m => msgs.set(m.id, m)); }
+      refresh();
+    }
+  } finally { flushing = false; refresh(); }
+}
+
+/* ---------- Games ---------- */
+const GNAME = {ttt:'Tic-Tac-Toe', battleship:'Battleship', chess:'Chess', whot:'Whot'}, GICON = {ttt:ic('g-ttt',32), chess:ic('g-chess',32), whot:ic('g-whot',32), battleship:''};
+const games = new Map(), fleets = new Map(); let curG = null, gPick = false;
+const gOpp = g => profs.get(g.p1 === me.id ? g.p2 : g.p1);
+const gOppName = g => { const o = gOpp(g); return o ? nameOf(o) : 'your friend'; };
+function gLine(g){
+  if(g.status==='invited') return g.p2===me.id ? gOppName(g)+' challenged you' : 'Waiting for '+gOppName(g);
+  if(g.status==='declined') return 'Challenge declined';
+  if(g.status==='done') return g.winner ? (g.winner===me.id ? 'You won' : 'You lost') : "It's a draw";
+  return g.turn===me.id ? 'Your turn' : gOppName(g)+"'s turn";
+}
+async function loadGames(){
+  const {data} = await sb.from('gistly_games').select('*').order('updated_at',{ascending:false}).limit(50);
+  (data||[]).forEach(g => games.set(g.id, g));
+  const ids = [...new Set((data||[]).flatMap(g => [g.p1,g.p2]))].filter(i => !profs.has(i));
+  if(ids.length){ const {data:ps} = await sb.from('gistly_profiles').select('*').in('id', ids); (ps||[]).forEach(p => profs.set(p.id, p)); }
+}
+async function pullGame(id){ const {data} = await sb.from('gistly_games').select('*').eq('id', id).maybeSingle(); if(data){ games.set(data.id, data); refresh(); } return data; }
+function liveGames(){
+  sb.channel('gistly-games').on('postgres_changes', {event:'*', schema:'public', table:'gistly_games'}, async pl => {
+    const g = pl.new; if(!g || !g.id) return; games.set(g.id, g);
+    const o = g.p1===me.id ? g.p2 : g.p1;
+    if(!profs.has(o)){ const {data} = await sb.from('gistly_profiles').select('*').eq('id', o).maybeSingle(); if(data) profs.set(o, data); }
+    refresh(); if(curG && curG.id===g.id){ curG = g; renderGame(); }
+  }).subscribe();
+}
+
+function renderGBar(){
+  const b = $('#gbar'); if(!cur || !b) return;
+  let h = [...games.values()].filter(g => g.game!=='battleship' && (g.p1===cur.id||g.p2===cur.id) && (g.status==='invited'||g.status==='playing')).map(g =>
+    `<div class="gc"><span style="font-size:26px">${GICON[g.game]}</span><div><b>${GNAME[g.game]}</b><small>${esc(gLine(g))}</small></div>` +
+    (g.status==='invited' && g.p2===me.id
+      ? `<button class="btn sm" data-a="acc" data-id="${g.id}">Accept</button><button class="btn ghost sm" data-a="dec" data-id="${g.id}">No</button>`
+      : `<button class="btn sm" data-a="open" data-id="${g.id}">Open</button>`) + `</div>`).join('');
+  if(gPick) h += `<div class="gc"><b style="flex:1 1 100%">Challenge ${esc(nameOf(cur))} to…</b><button class="btn sm" data-a="new" data-g="chess">${ic('g-chess',18)} Chess</button><button class="btn sm" data-a="new" data-g="whot">${ic('g-whot',18)} Whot</button><button class="btn sm" data-a="new" data-g="ttt">${ic('g-ttt',18)} Tic-Tac-Toe</button></div>`;
+  b.innerHTML = h;
+}
+$('#c-game').onclick = () => { gPick = !gPick; renderGBar(); };
+$('#gbar').onclick = async e => {
+  const t = e.target.closest('button'); if(!t) return; const a = t.dataset.a, id = t.dataset.id;
+  if(a==='open') openGame(id);
+  else if(a==='acc' || a==='dec'){
+    const {error} = await sb.rpc('gistly_respond', {gid:id, accept:a==='acc'});
+    if(error){ alert(error.message); return; }
+    await pullGame(id); if(a==='acc') openGame(id);
+  } else if(a==='new'){
+    gPick = false;
+    const {data, error} = await sb.rpc('gistly_challenge', {opp:cur.id, g:t.dataset.g});
+    if(error){ alert(/open/i.test(error.message) ? 'You already have this game open with them.' : error.message); renderGBar(); return; }
+    await pullGame(data); renderGBar();
+  }
+};
+$('#g-back').onclick = () => { curG = null; if(cur){ view('v-chat'); renderChat(); } else { view('v-main'); setTab('games'); } };
+
+let gStartG = null;
+function renderGames(){
+  if(gStartG){ if(!$('#gp-q')) renderGamePicker(); return; }
+  const list = [...games.values()].filter(g => g.game !== 'battleship' && gOpp(g)).sort((a,b) => new Date(b.updated_at)-new Date(a.updated_at));
+  const card = (k, bg, txt) => `<button class="gcard" data-new="${k}" style="background:${bg};border:0;width:calc(100% - 40px);text-align:left;font:inherit"><span>${GICON[k]}</span><div><b>${GNAME[k]}</b><small>${txt}</small><br><span class="soon">Tap to challenge a friend</span></div></button>`;
+  $('#tab').innerHTML = `<div class="top"><h2>Games</h2></div><div class="scroll">` +
+    card('chess', '#E1ECFF', 'Think ahead and checkmate') + card('whot', '#FFE0D5', 'The classic card game') + card('ttt', '#C8F4DF', 'Get three in a row') +
+    (list.length ? `<div class="sec">Your games</div>` + list.map(g =>
+      `<button class="row" data-id="${g.id}"><span style="display:flex;width:34px;justify-content:center">${GICON[g.game]}</span><div class="mid"><div class="nm">${GNAME[g.game]} · ${esc(gOppName(g))}</div><div class="pv">${esc(gLine(g))}</div></div></button>`).join('') : '') + `</div>`;
+  $('#tab').querySelector('.scroll').onclick = e => {
+    const n = e.target.closest('[data-new]'); if(n){ gStartG = n.dataset.new; renderGamePicker(); return; }
+    const r = e.target.closest('.row'); if(r) openGame(r.dataset.id);
+  };
+}
+function renderGamePicker(){
+  const k = gStartG;
+  $('#tab').innerHTML = `<div class="top"><button class="chip" id="gp-back">${ic('back',16)} Back</button><h2 style="font-size:20px">${GNAME[k]}: pick a friend</h2></div>
+    <div class="pad"><input id="gp-q" placeholder="Search a username" autocapitalize="none" aria-label="Search username"></div><div class="scroll" id="gp-list"></div>`;
+  const show = arr => {
+    const box = $('#gp-list');
+    box.innerHTML = arr.length ? arr.map(p => `<button class="row" data-id="${p.id}">${avatar(p)}<div class="mid"><div class="nm">${esc(nameOf(p))}</div><div class="pv">@${esc(p.username)}</div></div></button>`).join('')
+      : '<div class="empty"><b>No one found</b>Try a username, or chat with a friend first.</div>';
+    box.onclick = async e => {
+      const r = e.target.closest('.row'); if(!r) return;
+      const {data, error} = await sb.rpc('gistly_challenge', {opp:r.dataset.id, g:k});
+      if(error){ alert(/open/i.test(error.message) ? 'You already have this game open with them.' : error.message); return; }
+      gStartG = null; await pullGame(data); openGame(data);
+    };
+  };
+  const recents = () => show(convos().map(c => profs.get(c.id)));
+  recents();
+  $('#gp-back').onclick = () => { gStartG = null; renderGames(); };
+  let t; $('#gp-q').oninput = e => {
+    const v = e.target.value = cleanUser(e.target.value); clearTimeout(t);
+    if(!v){ recents(); return; }
+    t = setTimeout(async () => {
+      const {data} = await sb.from('gistly_profiles').select('*').ilike('username', v+'%').neq('id', me.id).order('username').limit(15);
+      (data||[]).forEach(p => profs.set(p.id, p)); show(data||[]);
+    }, 300);
+  };
+}
+
+async function openGame(id){
+  curG = games.get(id) || await pullGame(id); if(!curG) return; chessSel = null;
+  view('v-game'); renderGame();
+}
+function renderGame(){
+  const g = curG; if(!g) return;
+  $('#g-title').textContent = GICON[g.game] + ' ' + GNAME[g.game];
+  $('#g-sub').textContent = 'vs ' + gOppName(g);
+  $('#g-line').textContent = gLine(g);
+  const my = g.turn===me.id && g.status==='playing';
+  let h = '';
+  if(g.status==='invited') h = `<div class="empty"><b>${esc(gLine(g))}</b>${g.p2===me.id ? 'Accept it from your chat.' : 'They will see your challenge in your chat.'}</div>`;
+  else if(g.status==='declined') h = '<div class="empty"><b>Challenge declined</b></div>';
+  else if(g.game==='chess'){ h = '<div id="cx"></div>'; }
+  else if(g.game==='whot'){ h = '<div id="wx"></div>'; }
+  else if(g.game==='ttt'){
+    h = `<p class="hint pad" style="text-align:center">You are ${g.p1===me.id ? 'X' : 'O'}</p><div class="ttt">` +
+      [...g.state.b].map((c,i) => `<button data-c="${i}" ${(c!=='-'||!my)?'disabled':''} class="${c==='X'?'x':c==='O'?'o':''}" aria-label="Square ${i+1}">${c==='-'?'':c==='X'?ic('xmark',44):ic('omark',44)}</button>`).join('') + '</div>';
+  } else {
+    if(!fleets.has(g.id)){ fleets.set(g.id, []);
+      sb.from('gistly_fleets').select('cells').eq('game_id', g.id).maybeSingle().then(({data}) => { if(data){ fleets.set(g.id, data.cells); if(curG && curG.id===g.id) renderGame(); } else fleets.delete(g.id); }); }
+    const sh = g.state.shots || {}, opp = g.p1===me.id ? g.p2 : g.p1;
+    const mine = new Map((sh[opp]||[]).map(x => [x[0], x[1]])), theirs = new Map((sh[me.id]||[]).map(x => [x[0], x[1]]));
+    const fl = new Set(fleets.get(g.id)||[]);
+    const grid = (fn, cls) => `<div class="bs ${cls}">` + Array.from({length:100}, (_,i) => fn(i)).join('') + '</div>';
+    h = '<p class="hint pad">Enemy waters. Tap a square to fire.</p>' +
+      grid(i => { const x = mine.get(i); return `<button data-c="${i}" ${(x!==undefined||!my)?'disabled':''} class="${x===true?'hit':x===false?'miss':''}" aria-label="Fire at ${i+1}"></button>`; }, '') +
+      '<p class="hint pad">Your fleet (green = your ships, red = hit, grey = miss)</p>' +
+      grid(i => { const x = theirs.get(i); return `<div class="${x===true?'hit':x===false?'miss':fl.has(i)?'ship':''}"></div>`; }, 'sm');
+  }
+  if(g.status==='done') h += `<div class="pad" style="margin-top:14px"><button class="btn" data-a="re">Play again</button></div>`;
+  if(g.status==='playing') h += `<div class="pad" style="margin:14px 0"><button class="btn ghost" data-a="res">Resign</button></div>`;
+  $('#g-body').innerHTML = h;
+  if(g.game==='chess' && (g.status==='playing' || g.status==='done')) paintChess();
+  if(g.game==='whot' && (g.status==='playing' || g.status==='done')) paintWhot();
+  if(g.status==='done' && g.winner===me.id) confetti(g.id);
+}
+$('#g-body').onclick = async e => {
+  const t = e.target.closest('button'); if(!t || !curG) return; const g = curG;
+  if(t.dataset.c !== undefined){
+    const {error} = await sb.rpc('gistly_move', {gid:g.id, cell:+t.dataset.c});
+    const n = await pullGame(g.id); if(n){ curG = n; renderGame(); }
+    if(error) $('#g-line').textContent = error.message;
+  } else if(t.dataset.a==='res'){
+    if(!confirm('Give up this game?')) return;
+    await sb.rpc('gistly_resign', {gid:g.id}); const n = await pullGame(g.id); if(n){ curG = n; renderGame(); }
+  } else if(t.dataset.a==='re'){
+    const {data, error} = await sb.rpc('gistly_challenge', {opp: g.p1===me.id ? g.p2 : g.p1, g:g.game});
+    if(error){ alert(error.message); return; }
+    await pullGame(data); openGame(data);
+  }
+};
+
+/* ---------- Posts and profile pages ---------- */
+const myLikes = new Set(); let following = new Set(), userFrom = 'main';
+const ago = d => { const m = Math.floor((Date.now()-new Date(d))/60000); return m<1 ? 'now' : m<60 ? m+'m' : m<1440 ? Math.floor(m/60)+'h' : new Date(d).toLocaleDateString([], {day:'numeric',month:'short'}); };
+async function loadFollowing(){ const {data} = await sb.from('gistly_follows').select('followee').eq('follower', me.id); following = new Set((data||[]).map(x => x.followee)); }
+async function postList(ids){
+  let q = sb.from('gistly_posts').select('*, gistly_likes(count), gistly_comments(count)');
+  if(ids) q = q.in('author', ids);
+  const {data, error} = await q.order('created_at', {ascending:false}).limit(30);
+  if(error) return null;
+  const need = [...new Set(data.map(x => x.author))].filter(i => !profs.has(i));
+  if(need.length){ const {data:ps} = await sb.from('gistly_profiles').select('*').in('id', need); (ps||[]).forEach(x => profs.set(x.id, x)); }
+  if(data.length){ const {data:l} = await sb.from('gistly_likes').select('post_id').eq('user_id', me.id).in('post_id', data.map(x => x.id)); (l||[]).forEach(x => myLikes.add(x.post_id)); }
+  lastPosts = data; return data;
+}
+const postCard = p => {
+  const a = profs.get(p.author) || {username:'user'}, lk = (p.gistly_likes&&p.gistly_likes[0]?.count)||0, cm = (p.gistly_comments&&p.gistly_comments[0]?.count)||0, on = myLikes.has(p.id);
+  const media = !p.media_url ? '' : p.media_kind==='video' ? `<div class="vth" data-open="${p.id}"><video src="${esc(p.media_url)}#t=0.1" preload="${low()?'none':'metadata'}" muted playsinline></video><span class="play">${ic('play',26)}</span></div>` : `<img data-open="${p.id}" src="${esc(p.media_url)}" alt="" loading="lazy" style="cursor:pointer">`;
+  return `<div class="post" data-pid="${p.id}"><div class="ph" data-u="${p.author}">${avatar(a,'sm')}<div><b>${esc(nameOf(a))}</b> <small style="color:var(--sub)">@${esc(a.username)} · ${ago(p.created_at)}</small></div></div>
+  ${p.body ? `<p>${esc(p.body)}</p>` : ''}${media}
+  <div class="pa"><button data-a="like" class="${on?'on':''}" aria-label="Like">${ic('heart',20,on)} <span>${lk}</span></button><button data-a="cm" aria-label="Comments">${ic('comment',20)} <span>${cm}</span></button><button data-a="save" class="${saved.has(p.id)?'on':''}" aria-label="Save">${ic('bookmark',20,saved.has(p.id))}${saved.has(p.id)?' Saved':''}</button><button data-a="shr" aria-label="Share">${ic('share',20)}</button>${p.author===me.id ? '<button data-a="del" aria-label="Delete">'+ic('trash',20)+'</button>' : '<button data-a="rep" aria-label="Report">'+ic('flag',20)+'</button>'}</div><div class="cm"></div></div>`;
+};
+function bindPosts(box, extra){
+  box.onclick = async e => {
+    if(extra && await extra(e)) return;
+    const o = e.target.closest('[data-open]'); if(o){ openReelsFrom(o.dataset.open); return; }
+    const u = e.target.closest('[data-u]'); if(u){ openUser(u.dataset.u); return; }
+    const b = e.target.closest('button'); if(!b || !b.dataset.a) return;
+    const card = b.closest('.post'); if(!card) return; const id = card.dataset.pid, a = b.dataset.a;
+    if(a==='like'){
+      const was = myLikes.has(id), n = Math.max(0, (parseInt(b.textContent.replace(/\D/g,''))||0) + (was?-1:1));
+      if(was){ myLikes.delete(id); await sb.from('gistly_likes').delete().eq('post_id', id).eq('user_id', me.id); }
+      else { myLikes.add(id); await sb.from('gistly_likes').insert({post_id:id, user_id:me.id}); }
+      b.className = was ? '' : 'on'; b.innerHTML = ic('heart',20,!was) + ' <span>' + n + '</span>';
+    } else if(a==='del'){ if(confirm('Delete this post?')){ await sb.from('gistly_posts').delete().eq('id', id); card.remove(); } }
+    else if(a==='rep'){ const why = await askReason(); if(!why) return; const {error} = await sb.from('gistly_reports').insert({reporter:me.id, post_id:id, reason:why}); b.textContent = error ? 'Could not report' : 'Reported ✓'; b.disabled = true; }
+    else if(a==='cm') toggleComments(card, id);
+    else if(a==='save') toggleSave(id, b);
+    else if(a==='shr') sharePost(id, (card.querySelector('p')||{}).textContent, b);
+    else if(a==='send'){
+      const inp = card.querySelector('.cm input'), t = inp.value.trim(); if(!t) return;
+      const {error} = await sb.from('gistly_comments').insert({post_id:id, author:me.id, body:t});
+      if(!error){ const cb = card.querySelector('[data-a=cm]'); cb.innerHTML = ic('comment',20) + ' <span>' + ((parseInt(cb.textContent.replace(/\D/g,''))||0)+1) + '</span>'; card.querySelector('.cm').innerHTML = ''; toggleComments(card, id); }
+    }
+  };
+}
+async function toggleComments(card, id){
+  const box = card.querySelector('.cm'); if(box.innerHTML){ box.innerHTML = ''; return; }
+  box.innerHTML = '<small>Loading…</small>';
+  const {data} = await sb.from('gistly_comments').select('*').eq('post_id', id).order('created_at').limit(50);
+  const need = [...new Set((data||[]).map(c => c.author))].filter(i => !profs.has(i));
+  if(need.length){ const {data:ps} = await sb.from('gistly_profiles').select('*').in('id', need); (ps||[]).forEach(x => profs.set(x.id, x)); }
+  box.innerHTML = (data||[]).map(c => `<div><b>${esc(nameOf(profs.get(c.author)||{username:'user'}))}</b> ${esc(c.body)} <small>${ago(c.created_at)}</small></div>`).join('') +
+    `<div style="display:flex;gap:8px;margin-top:6px"><input placeholder="Add a comment" maxlength="500" style="height:42px" aria-label="Comment"><button class="btn sm" data-a="send">Send</button></div>`;
+}
+
+async function openUser(id){
+  userFrom = $('#v-chat').classList.contains('on') ? 'chat' : 'main';
+  view('v-user'); const body = $('#u-body'); body.innerHTML = '<div class="empty">Loading…</div>';
+  const {data} = await sb.from('gistly_profiles').select('*').eq('id', id).maybeSingle();
+  if(!data){ body.innerHTML = '<div class="empty"><b>Person not found</b></div>'; return; }
+  profs.set(data.id, data); $('#u-title').textContent = '@' + data.username;
+  userPage(data, body, data.id === me.id);
+}
+$('#u-back').onclick = () => { if(userFrom==='chat' && cur) view('v-chat'); else { view('v-main'); } };
+
+async function userPage(p, box, mine){
+  const cnt = async (tbl, col) => (await sb.from(tbl).select('*', {count:'exact', head:true}).eq(col, p.id)).count || 0;
+  const [fr, fg, pc, posts] = await Promise.all([cnt('gistly_follows','followee'), cnt('gistly_follows','follower'), cnt('gistly_posts','author'), postList([p.id])]);
+  if(!box.isConnected) return;
+  box.innerHTML = `<div class="cover" style="${p.cover_url ? `background-image:url('${esc(p.cover_url)}')` : ''}"></div>
+  <div class="pp">${avatar(p)}<h2 style="margin-top:8px">${esc(nameOf(p))}</h2>
+  <div class="hint" style="margin-top:2px">@${esc(p.username)}${p.location ? ' · ' + ic('pin',12) + esc(p.location) : ''}</div>
+  ${p.bio ? `<p style="margin-top:8px;line-height:1.45">${esc(p.bio)}</p>` : ''}
+  <div class="stats"><span><b>${pc}</b> posts</span><span><b>${fr}</b> followers</span><span><b>${fg}</b> following</span></div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">${mine ? '<button class="btn sm" data-a="edit">Edit profile</button><button class="btn ghost sm" data-a="newp">+ Post</button><button class="btn ghost sm" data-a="saved">' + ic('bookmark',16) + ' Saved</button>'
+    : `<button class="btn sm" data-a="follow">${following.has(p.id) ? 'Following' : 'Follow'}</button><button class="btn ghost sm" data-a="msg">Message</button><button class="btn ghost sm" data-a="block">${blocked.has(p.id) ? 'Unblock' : 'Block'}</button><button class="btn ghost sm" data-a="report">Report</button>`}</div></div>
+  <div style="border-top:1px solid var(--line)">${posts === null ? '<div class="empty">Could not load posts.</div>' : posts.length ? posts.map(postCard).join('') : '<div class="empty"><b>No posts to show</b>Nothing here yet, or this person only shares with followers.</div>'}</div>`;
+  bindPosts(box, async e => {
+    const b = e.target.closest('[data-a]'); if(!b || b.closest('.post')) return false;
+    if(b.dataset.a==='edit') renderSettings();
+    else if(b.dataset.a==='newp') openCompose();
+    else if(b.dataset.a==='saved') openSaved();
+    else if(b.dataset.a==='msg') openChat(p);
+    else if(b.dataset.a==='block'){
+      if(blocked.has(p.id)){ await sb.from('gistly_blocks').delete().eq('blocker', me.id).eq('blocked', p.id); blocked.delete(p.id); }
+      else{
+        if(!confirm('Block @' + p.username + '? They will not be able to message you or see your posts.')) return true;
+        await sb.from('gistly_blocks').insert({blocker:me.id, blocked:p.id}); blocked.add(p.id);
+        await sb.from('gistly_follows').delete().eq('follower', me.id).eq('followee', p.id); following.delete(p.id);
+      }
+      userPage(p, box, mine);
+    }
+    else if(b.dataset.a==='report'){
+      const why = await askReason(); if(why){ const {error} = await sb.from('gistly_reports').insert({reporter:me.id, target_user:p.id, reason:why}); b.textContent = error ? 'Could not report' : 'Reported ✓'; b.disabled = true; }
+    }
+    else if(b.dataset.a==='follow'){
+      b.disabled = true;
+      if(following.has(p.id)){ await sb.from('gistly_follows').delete().eq('follower', me.id).eq('followee', p.id); following.delete(p.id); }
+      else { await sb.from('gistly_follows').insert({follower:me.id, followee:p.id}); following.add(p.id); }
+      userPage(p, box, mine);
+    }
+    return true;
+  });
+}
+
+/* ---------- New post ---------- */
+let cFile = null;
+function openCompose(){ cFile = null; $('#cp-text').value = ''; $('#cp-prev').innerHTML = ''; $('#cp-err').textContent = ''; $('#cp-file').value = ''; view('v-compose'); }
+$('#cp-back').onclick = () => view('v-main');
+$('#cp-pick').onclick = () => $('#cp-file').click();
+$('#cp-file').onchange = e => {
+  const f = e.target.files[0]; if(!f) return;
+  const isV = f.type.startsWith('video/');
+  if(isV && f.size > 15*1024*1024){ $('#cp-err').textContent = 'That video is too big. Choose one under 15 MB.'; return; }
+  $('#cp-err').textContent = ''; cFile = f; const u = URL.createObjectURL(f);
+  $('#cp-prev').innerHTML = isV ? `<video src="${u}" controls playsinline></video>` : `<img src="${u}" alt="Preview">`;
+};
+$('#cp-go').onclick = async () => {
+  const body = $('#cp-text').value.trim(), err = $('#cp-err'), btn = $('#cp-go'); err.textContent = '';
+  if(!body && !cFile){ err.textContent = 'Write something, or add a photo or video.'; return; }
+  btn.disabled = true; btn.textContent = 'Posting…';
+  try{
+    let url = null, kind = null;
+    if(cFile){
+      const isV = cFile.type.startsWith('video/'); let blob = cFile, ext = 'jpg';
+      if(isV){ ext = ({'video/mp4':'mp4','video/webm':'webm','video/quicktime':'mov'})[cFile.type] || 'mp4'; }
+      else {
+        const bmp = await createImageBitmap(cFile), sc = Math.min(1, 1080/Math.max(bmp.width, bmp.height)), c = document.createElement('canvas');
+        c.width = Math.round(bmp.width*sc); c.height = Math.round(bmp.height*sc); c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+        blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .82));
+      }
+      const path = `${me.id}/${crypto.randomUUID()}.${ext}`;
+      const up = await sb.storage.from('gistly-posts').upload(path, blob, {contentType: isV ? cFile.type : 'image/jpeg'});
+      if(up.error) throw up.error;
+      url = sb.storage.from('gistly-posts').getPublicUrl(path).data.publicUrl; kind = isV ? 'video' : 'image';
+    }
+    const {error} = await sb.from('gistly_posts').insert({author:me.id, body, media_url:url, media_kind:kind});
+    if(error) throw error;
+    view('v-main'); feedTab = 'posts'; setTab('discover');
+  }catch(e){ err.textContent = 'Could not post. Check your internet and try again.'; }
+  finally{ btn.disabled = false; btn.textContent = 'Post'; }
+};
+
+/* ---------- Speed cache, safety, notifications, admin ---------- */
+let blocked = new Set(), isAdmin = false, openReports = 0, notifCount = 0, nchan = null;
+const VAPID = 'BJZzZcrkebFVFUPAkvyi4aOMvF0KHvw85Q7rfgzVLKyOkKHrLZXJ4O9woqDS9sdDGCxNVQWccpLzx3laAZieFuU';
+function saveCache(){
+  try{
+    const ms = [...msgs.values()].sort((a,b) => new Date(b.created_at)-new Date(a.created_at)).slice(0,100), ids = new Set();
+    ms.forEach(m => { ids.add(m.sender); ids.add(m.receiver); });
+    localStorage.setItem('g-cache', JSON.stringify({me, msgs:ms, profs:[...ids].filter(i => i!==me.id && profs.has(i)).map(i => profs.get(i))}));
+  }catch(e){}
+}
+async function checkSanction(){
+  const {data} = await sb.from('gistly_sanctions').select('*').eq('user_id', me.id).maybeSingle();
+  if(!data) return false;
+  const banned = data.status === 'banned';
+  if(!banned && !(new Date(data.until) > new Date())) return false;
+  $('#bn-t').textContent = banned ? 'Your account was banned' : 'Your account is suspended';
+  $('#bn-p').textContent = banned ? 'This account broke the Gistly rules and can no longer be used.' : 'You can use Gistly again on ' + new Date(data.until).toLocaleString() + '.';
+  view('v-banned'); return true;
+}
+$('#bn-out').onclick = async () => { await sb.auth.signOut(); localStorage.removeItem('g-cache'); localStorage.removeItem('g-q'); location.reload(); };
+async function loadBlocks(){ const {data} = await sb.from('gistly_blocks').select('blocked').eq('blocker', me.id); blocked = new Set((data||[]).map(x => x.blocked)); }
+async function checkAdmin(){
+  const {data} = await sb.rpc('gistly_is_admin'); isAdmin = !!data;
+  if(isAdmin){ const {count} = await sb.from('gistly_reports').select('*', {count:'exact', head:true}).eq('status','open'); openReports = count || 0; }
+}
+async function loadNotifCount(){
+  const {count} = await sb.from('gistly_notifications').select('*', {count:'exact', head:true}).eq('user_id', me.id).is('read_at', null).neq('kind','message');
+  notifCount = count || 0; updateBell();
+}
+function updateBell(){ const n = $('#bell-n'); if(!n) return; n.style.display = notifCount ? 'inline-block' : 'none'; n.textContent = notifCount > 99 ? '99+' : notifCount; }
+function liveNotifs(){
+  if(nchan) sb.removeChannel(nchan);
+  nchan = sb.channel('gistly-notifs').on('postgres_changes', {event:'INSERT', schema:'public', table:'gistly_notifications', filter:'user_id=eq.'+me.id}, pl => {
+    const k = pl.new && pl.new.kind; if(k && k !== 'message'){ notifCount++; if(k==='report') openReports++; updateBell(); }
+  }).subscribe();
+}
+
+$('#nt-back').onclick = () => view('v-main');
+async function openNotifs(){
+  view('v-notifs'); const box = $('#nt-body'); box.innerHTML = '<div class="empty">Loading…</div>';
+  const {data} = await sb.from('gistly_notifications').select('*').neq('kind','message').order('created_at', {ascending:false}).limit(40);
+  const need = [...new Set((data||[]).map(n => n.actor).filter(Boolean))].filter(i => !profs.has(i));
+  if(need.length){ const {data:ps} = await sb.from('gistly_profiles').select('*').in('id', need); (ps||[]).forEach(x => profs.set(x.id, x)); }
+  const L = {follow:'started following you', post:'posted', comment:'commented on your post', report:'New report to review'};
+  box.innerHTML = (data||[]).length ? data.map(n => { const a = profs.get(n.actor) || {username:'gistly'}, warn = n.kind==='warning';
+    const txt = warn ? n.body : (L[n.kind]||'') + (n.body && n.kind!=='follow' && n.kind!=='report' ? ': ' + n.body : '');
+    return `<button class="row" data-k="${n.kind}" data-a="${n.actor||''}">${n.actor ? avatar(a) : '<div class="av" style="background:#FFE0D5">!</div>'}<div class="mid"><div class="nm">${warn ? 'Gistly' : esc(nameOf(a))}${n.read_at ? '' : ' <span style="color:var(--coral)">●</span>'}</div><div class="pv" style="white-space:normal">${esc(txt)}</div></div><div class="tm">${ago(n.created_at)}</div></button>`; }).join('')
+    : '<div class="empty"><b>Nothing yet</b>New followers, comments and posts will show here.</div>';
+  box.onclick = e => { const r = e.target.closest('.row'); if(!r) return; const k = r.dataset.k;
+    if(k==='report') openAdmin(); else if(k==='comment') openUser(me.id); else if(r.dataset.a) openUser(r.dataset.a); };
+  await sb.from('gistly_notifications').update({read_at:new Date().toISOString()}).eq('user_id', me.id).is('read_at', null).neq('kind','message');
+  notifCount = 0; updateBell();
+}
+async function handleOpen(qs){
+  const q = new URLSearchParams(qs || ''), n = q.get('n'), r = q.get('r'), gc = q.get('g');
+  if(gc){ history.replaceState(null, '', location.pathname); const {data, error} = await sb.rpc('gistly_join_code', {code:gc}); if(error){ toast('That invite link is not valid.'); return; } await loadGroups(); openGroup(data); return; }
+  if(!n) return;
+  history.replaceState(null, '', location.pathname);
+  if(n==='message' && r && r.startsWith('g:')){ openGroup(r.slice(2)); }
+  else if(n==='message' && r){ let pr = profs.get(r); if(!pr){ const {data} = await sb.from('gistly_profiles').select('*').eq('id', r).maybeSingle(); pr = data; if(pr) profs.set(r, pr); } if(pr) openChat(pr); }
+  else if(n==='follow' && r) openUser(r);
+  else if(n==='post' && r){ openPostById(r); }
+  else if(n==='comment'){ feedTab = 'posts'; setTab('discover'); }
+  else if(n==='report') openAdmin(); else openNotifs();
+}
+if('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', e => { if(e.data && e.data.open && me) handleOpen((e.data.open.split('?')[1]) || ''); });
+
+const u8 = b => { const s = (b + '='.repeat((4 - b.length % 4) % 4)).replace(/-/g,'+').replace(/_/g,'/'), r = atob(s); return Uint8Array.from([...r].map(c => c.charCodeAt(0))); };
+async function enablePush(){
+  const st = $('#n-st') || {};
+  if(!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)){ st.textContent = 'This browser cannot show notifications. Open Gistly in Chrome and install it.'; return; }
+  const perm = await Notification.requestPermission();
+  if(perm !== 'granted'){ st.textContent = 'Notifications are blocked. Allow them in your phone or browser settings.'; return; }
+  try{
+    const reg = await navigator.serviceWorker.ready;
+    const sub = (await reg.pushManager.getSubscription()) || await reg.pushManager.subscribe({userVisibleOnly:true, applicationServerKey:u8(VAPID)});
+    const j = sub.toJSON(); const {error} = await sb.rpc('gistly_save_sub', {e:j.endpoint, p:j.keys.p256dh, a:j.keys.auth}); if(error) throw error;
+    st.textContent = '✓ On for this phone'; if($('#n-on')) $('#n-on').style.display = 'none'; return true;
+  }catch(e){ st.textContent = 'Could not turn on notifications. Try again.'; }
+}
+function bindSettingsExtras(){
+  const st = $('#n-st'); if('Notification' in window && Notification.permission === 'granted'){ st.textContent = 'On for this phone'; $('#n-on').textContent = 'Refresh'; }
+  $('#p-dm').value = me.dm_policy || 'everyone';
+  $('#p-dm').onchange = async e => { const {error} = await sb.rpc('gistly_set_dm_policy', {p:e.target.value}); if(error){ toast('Could not save that.'); e.target.value = me.dm_policy || 'everyone'; return; } me.dm_policy = e.target.value; await loadExtras(); toast(me.dm_policy === 'approved' ? 'Only people you approve can message you. Your current chats stay open.' : 'Anyone can message you.'); };
+  $('#n-on').onclick = enablePush;
+  $('#p-onl').onclick = async e => { const on = me.show_online === false;
+    const {error} = await sb.from('gistly_profiles').update({show_online:on}).eq('id', me.id);
+    if(!error){ me.show_online = on; e.target.classList.toggle('on', on); e.target.setAttribute('aria-checked', on); if(pch){ if(on) pch.track({at:Date.now()}); else pch.untrack(); } } };
+  document.querySelectorAll('[data-pk]').forEach(b => b.onclick = async () => {
+    const k = b.dataset.pk, on = (me.notif_prefs||{})[k] === false, prefs = {...(me.notif_prefs||{}), [k]:on};
+    const {error} = await sb.from('gistly_profiles').update({notif_prefs:prefs}).eq('id', me.id);
+    if(!error){ me.notif_prefs = prefs; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); } });
+  const bl = $('#bl-list');
+  (async () => {
+    const ids = [...blocked]; if(!ids.length){ bl.innerHTML = '<small style="color:var(--sub)">Nobody blocked.</small>'; return; }
+    const need = ids.filter(i => !profs.has(i)); if(need.length){ const {data} = await sb.from('gistly_profiles').select('*').in('id', need); (data||[]).forEach(p => profs.set(p.id, p)); }
+    bl.innerHTML = ids.map(i => `<div class="setrow"><span>@${esc((profs.get(i)||{username:'user'}).username)}</span><button class="btn ghost sm" data-ub="${i}">Unblock</button></div>`).join('');
+  })();
+  bl.onclick = async e => { const b = e.target.closest('[data-ub]'); if(!b) return;
+    await sb.from('gistly_blocks').delete().eq('blocker', me.id).eq('blocked', b.dataset.ub); blocked.delete(b.dataset.ub); b.closest('.setrow').remove(); };
+  $('#rc-new').onclick = async () => { if(!confirm('Make a new recovery code? Your old code will stop working.')) return;
+    const r = await sb.functions.invoke('gistly-recover', {body:{action:'new-code'}}); showCode(r.data && r.data.code, renderSettings); };
+  if(isAdmin) $('#ad-open').onclick = openAdmin;
+  $('#del-acc').onclick = async () => {
+    if(!confirm('Delete your account forever? Your chats, posts and profile will be removed.')) return;
+    if(prompt('Type DELETE to confirm') !== 'DELETE') return;
+    const {error} = await sb.rpc('gistly_delete_account'); if(error){ alert('Could not delete the account. Try again.'); return; }
+    await sb.auth.signOut(); localStorage.clear(); location.reload(); };
+}
+
+function showCode(code, next){
+  $('#cd-code').textContent = code || 'Could not make a code. Try again in Profile → Edit profile and settings.';
+  $('#cd-copy').textContent = 'Copy code'; view('v-code'); $('#cd-ok').onclick = next;
+  $('#cd-copy').onclick = () => { if(code && navigator.clipboard){ navigator.clipboard.writeText(code); $('#cd-copy').textContent = 'Copied ✓'; } };
+}
+$('#a-forgot').onclick = () => { $('#r-err').textContent = ''; view('v-reset'); };
+$('#r-back').onclick = () => openAuth('in');
+$('#r-go').onclick = async () => {
+  const u = cleanUser($('#r-user').value), c = $('#r-code').value.trim(), p = $('#r-pass').value, err = $('#r-err'); err.textContent = '';
+  if(!u || !c || p.length < 6){ err.textContent = 'Fill in all three boxes. The new password needs 6 or more characters.'; return; }
+  const b = $('#r-go'); b.disabled = true; b.textContent = 'Please wait…';
+  const r = await sb.functions.invoke('gistly-recover', {body:{action:'reset', username:u, code:c, password:p}});
+  b.disabled = false; b.textContent = 'Reset password';
+  if(r.error){ let m = 'Could not reset. Check your internet.'; try{ m = (await r.error.context.json()).error || m; }catch(e){} err.textContent = m; return; }
+  showCode(r.data.code, () => openAuth('in'));
+};
+
+function askReason(){
+  return new Promise(res => {
+    const m = $('#modal');
+    m.innerHTML = `<div class="mbox"><b>Why are you reporting this?</b>${['Spam','Abuse or bullying','Fake account','Nudity or violence','Other'].map(r => `<button class="btn ghost" data-r="${r}">${r}</button>`).join('')}<button class="chip" data-r="">Cancel</button></div>`;
+    m.classList.add('on');
+    m.onclick = e => { const b = e.target.closest('button'); if(!b && e.target !== m) return; m.classList.remove('on'); res(b ? b.dataset.r : ''); };
+  });
+}
+
+$('#ad-back').onclick = () => view('v-main');
+async function openAdmin(){
+  view('v-admin'); const box = $('#ad-body'); box.innerHTML = '<div class="empty">Loading…</div>';
+  const [{data:rs}, {data:ss}] = await Promise.all([
+    sb.from('gistly_reports').select('*').eq('status','open').order('created_at', {ascending:false}).limit(50),
+    sb.from('gistly_sanctions').select('*')]);
+  const pids = [...new Set([...(rs||[]).flatMap(r => [r.reporter, r.target_user]), ...(ss||[]).map(x => x.user_id)])].filter(i => i && !profs.has(i));
+  if(pids.length){ const {data} = await sb.from('gistly_profiles').select('*').in('id', pids); (data||[]).forEach(x => profs.set(x.id, x)); }
+  const postIds = (rs||[]).map(r => r.post_id).filter(Boolean), posts = {};
+  if(postIds.length){ const {data} = await sb.from('gistly_posts').select('*').in('id', postIds); (data||[]).forEach(x => posts[x.id] = x); }
+  openReports = (rs||[]).length;
+  const nm = i => '@' + esc((profs.get(i)||{username:'?'}).username);
+  box.innerHTML = `<div class="sec">Open reports (${openReports})</div>` + ((rs||[]).length ? rs.map(r => { const po = posts[r.post_id];
+    return `<div class="card" data-rid="${r.id}"><b>${nm(r.target_user)}</b> reported by ${nm(r.reporter)}<div class="hint">Reason: ${esc(r.reason)} · ${ago(r.created_at)}</div>` +
+      (po ? `<p style="margin:10px 0;white-space:pre-wrap">${esc(po.body) || '(photo or video)'}</p>` + (po.media_url ? (po.media_kind==='video' ? `<video src="${esc(po.media_url)}" controls preload="none" style="width:100%;border-radius:12px"></video>` : `<img src="${esc(po.media_url)}" alt="" style="width:100%;border-radius:12px">`) : '') : '<div class="hint">Whole account reported.</div>') +
+      `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><button class="chip" data-x="dismiss">Dismiss</button>${po ? '<button class="chip" data-x="delete_post">Delete post</button>' : ''}<button class="chip" data-x="warn">Warn</button><button class="chip" data-x="suspend" data-d="1">Suspend 1d</button><button class="chip" data-x="suspend" data-d="7">7d</button><button class="chip" data-x="suspend" data-d="30">30d</button><button class="chip" data-x="ban" style="color:var(--err)">Ban</button></div></div>`; }).join('') : '<div class="empty">No open reports</div>') +
+    '<div class="sec">Suspended or banned</div>' + ((ss||[]).length ? ss.map(x => `<div class="card"><div class="setrow"><div>${nm(x.user_id)}<small>${x.status}${x.until ? ' until ' + new Date(x.until).toLocaleDateString() : ''}</small></div><button class="btn ghost sm" data-lift="${x.user_id}">Lift</button></div></div>`).join('') : '<div class="hint pad">Nobody right now.</div>');
+  box.onclick = async e => {
+    const x = e.target.closest('[data-x]'), l = e.target.closest('[data-lift]');
+    if(x){ if(x.dataset.x==='ban' && !confirm('Ban this person forever?')) return;
+      const {error} = await sb.rpc('gistly_admin_act', {rid:x.closest('[data-rid]').dataset.rid, act:x.dataset.x, days:+(x.dataset.d||0)});
+      if(error){ alert(error.message); return; } openAdmin(); }
+    else if(l){ await sb.rpc('gistly_admin_lift', {uid:l.dataset.lift}); openAdmin(); }
+  };
+}
+
+/* ---------- Online dots and typing ---------- */
+let pch = null, typingT = 0, pt = null; const typingFrom = new Map();
+function schedulePaint(){ clearTimeout(pt); pt = setTimeout(refresh, 300); }
+function startPresence(){
+  if(pch) sb.removeChannel(pch);
+  pch = sb.channel('gistly-live', {config:{presence:{key:me.id}, broadcast:{self:false}}});
+  pch.on('presence', {event:'sync'}, () => { online.clear(); Object.keys(pch.presenceState()).forEach(k => online.add(k)); schedulePaint(); })
+     .on('broadcast', {event:'typing'}, ({payload}) => {
+       if(payload && payload.to === me.id){ typingFrom.set(payload.from, Date.now()); if(cur && cur.id === payload.from) status(); setTimeout(() => { if(cur) status(); }, 3200); } })
+     .subscribe(async st => { if(st === 'SUBSCRIBED' && me.show_online !== false) await pch.track({at:Date.now()}); });
+}
+ta.addEventListener('input', () => {
+  if(!cur || !pch || Date.now() - typingT < 2000) return; typingT = Date.now();
+  pch.send({type:'broadcast', event:'typing', payload:{from:me.id, to:cur.id}});
+});
+function confetti(id){
+  if(confetti.done.has(id)) return; confetti.done.add(id);
+  const c = document.createElement('div'); c.className = 'confetti';
+  c.innerHTML = Array.from({length:28}, (_,i) => `<i style="left:${Math.random()*100}%;animation-delay:${Math.random()*.5}s;background:${['#FF6548','#3478F6','#C8F4DF','#FFE0D5','#F2B134'][i%5]}"></i>`).join('');
+  $('#app').appendChild(c); setTimeout(() => c.remove(), 2600);
+}
+confetti.done = new Set();
+
+/* ---------- 3D Chess ---------- */
+let ChessLib = null, chessSel = null, chessBusy = false, chessTilt = localStorage.getItem('g-3d') !== '0';
+const chessLib = async () => { if(!ChessLib) ChessLib = (await import('https://cdn.jsdelivr.net/npm/chess.js@1.0.0/+esm')).Chess; return ChessLib; };
+const INIT = {q:1, r:2, b:2, n:2, p:8};
+const PIECE = {
+ p:'<circle cx="22.5" cy="13" r="5.5"/><path d="M17 22c0-3 2-4.500 5.500-4.500S28 19 28 22c0 3 4 5 4 11H13c0-6 4-8 4-11z"/><rect x="10" y="33" width="25" height="5.500" rx="2.500"/>',
+ r:'<path d="M12 9h4.500v3h3.500V9h5v3h3.500V9H33v9l-3.500 3v11H31v1.500H14V32h1.500V21L12 18z"/><rect x="10" y="33" width="25" height="5.500" rx="2.500"/>',
+ n:'<path d="M13 38c0-9 3-12 5.500-16-2.500.500-4.500 2-7.500 3.500l-1.500-4c4-3 8-9 10-12.500l2 2.500c8.500 1 14 8 14 18.500v8.500z"/><circle cx="21" cy="14.500" r="1.400" fill="#000" stroke="none"/>',
+ b:'<circle cx="22.500" cy="8.500" r="3.200"/><path d="M22.500 12.500c-5.500 3-8.500 7-8.500 12 0 4 3 5.500 3 8h11c0-2.500 3-4 3-8 0-5-3-9-8.500-12z"/><path d="M19.500 21h6M22.500 18v6" stroke-width="1.600" fill="none"/><rect x="11" y="33" width="23" height="5.500" rx="2.500"/>',
+ q:'<circle cx="9" cy="14" r="2.600"/><circle cx="16" cy="9" r="2.600"/><circle cx="22.500" cy="7" r="2.600"/><circle cx="29" cy="9" r="2.600"/><circle cx="36" cy="14" r="2.600"/><path d="M8 16.500l5 14.500h19l5-14.500-7 7-3-11-4 11-4-11-3 11z"/><rect x="11" y="32" width="23" height="6.500" rx="2.500"/>',
+ k:'<path d="M22.500 3.500v8M18.500 7.500h8" stroke-width="2.600" fill="none"/><path d="M22.500 13c-8.500 0-13.500 5-11.500 11.500 1 3 3 5 3 8.500h17c0-3.500 2-5.500 3-8.500 2-6.500-3-11.500-11.500-11.500z"/><rect x="10" y="33" width="25" height="5.500" rx="2.500"/>'
+};
+function pieceSvg(t, color, cls){ const w = color === 'w'; return `<svg class="ps ${cls||''}" viewBox="0 0 45 45" fill="url(#${w?'gw':'gb'})" stroke="${w?'#4a3b2d':'#000'}" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true">${PIECE[t]}</svg>`; }
+async function paintChess(){
+  const g = curG, box = $('#cx'); if(!g || !box) return;
+  box.innerHTML = '<div class="empty">Setting up the board…</div>';
+  let Chess; try{ Chess = await chessLib(); }catch(e){ box.innerHTML = '<div class="empty"><b>Could not load chess</b>Check your internet and try again.</div>'; return; }
+  if(!curG || curG.id !== g.id || !$('#cx')) return;
+  const ch = new Chess(g.state.fen), flip = g.p2 === me.id, myC = g.p1 === me.id ? 'w' : 'b', oppC = myC === 'w' ? 'b' : 'w';
+  const myTurn = g.status === 'playing' && g.turn === me.id && ch.turn() === myC; if(!myTurn) chessSel = null;
+  const board = ch.board(), last = g.state.last || {}, legal = {};
+  if(myTurn && chessSel) ch.moves({square:chessSel, verbose:true}).forEach(m => legal[m.to] = m);
+  let kingSq = null; if(ch.inCheck()) board.forEach((row, r) => row.forEach((x, c) => { if(x && x.type==='k' && x.color===ch.turn()) kingSq = 'abcdefgh'[c] + (8-r); }));
+  const rs = [0,1,2,3,4,5,6,7], order = flip ? [...rs].reverse() : rs; let h = '';
+  for(const r of order) for(const c of order){
+    const x = board[r][c], sq = 'abcdefgh'[c] + (8-r);
+    const cls = ['cs', (r+c)%2===0 ? 'l' : 'd', (last.from===sq || last.to===sq) ? 'last' : '', chessSel===sq ? 'sel' : '', legal[sq] ? (x ? 'cap' : 'mv') : '', kingSq===sq ? 'chk' : ''].join(' ');
+    h += `<button class="${cls}" data-sq="${sq}" aria-label="${sq}">${x ? `<span class="pc">${pieceSvg(x.type, x.color)}</span>` : ''}</button>`;
+  }
+  const cnt = {w:{}, b:{}}; board.flat().forEach(x => { if(x) cnt[x.color][x.type] = (cnt[x.color][x.type]||0) + 1; });
+  const lost = col => 'qrbnp'.split('').map(t => pieceSvg(t, col, 'mini').repeat(Math.max(0, INIT[t] - (cnt[col][t]||0)))).join('');
+  box.innerHTML = `<div class="cwrap"><div class="cap">${esc(gOppName(g))} took: ${lost(myC)}</div>
+    <div class="cframe ${chessTilt?'t3':''}"><div class="cb">${h}</div></div>
+    <div class="cap">You took: ${lost(oppC)}</div>
+    <p class="hint" style="text-align:center">${ch.inCheck() && g.status==='playing' ? 'Check! ' : ''}${g.state.moves && g.state.moves.length ? 'Last move: ' + esc(g.state.moves[g.state.moves.length-1]) : 'White moves first'}</p>
+    <div style="text-align:center"><button class="chip" id="c3d">${chessTilt ? 'Flat view' : '3D view'}</button></div></div>`;
+  box.onclick = async e => {
+    if(e.target.closest('#c3d')){ chessTilt = !chessTilt; localStorage.setItem('g-3d', chessTilt ? '1' : '0'); paintChess(); return; }
+    const b = e.target.closest('[data-sq]'); if(!b || !myTurn || chessBusy) return; const sq = b.dataset.sq;
+    if(chessSel && legal[sq]){
+      chessBusy = true; $('#g-line').textContent = 'Sending…';
+      const {error} = await sb.functions.invoke('gistly-chess', {body:{gid:g.id, from:chessSel, to:sq, promotion:'q'}});
+      chessBusy = false; chessSel = null;
+      let msg = ''; if(error){ msg = 'Move failed. Try again.'; try{ msg = (await error.context.json()).error || msg; }catch(_){} }
+      const n = await pullGame(g.id); if(n){ curG = n; renderGame(); } if(msg) $('#g-line').textContent = msg; return;
+    }
+    const x = ch.get(sq); chessSel = (x && x.color === myC && chessSel !== sq) ? sq : null; paintChess();
+  };
+}
+
+/* ---------- Reels viewer (full-screen photos and videos) ---------- */
+let lastPosts = [], rlPosts = [], saved = new Set(), rlMuted = true, rio = null, lastTap = 0;
+async function loadSaved(){ const {data} = await sb.from('gistly_saves').select('post_id').eq('user_id', me.id); saved = new Set((data||[]).map(x => x.post_id)); }
+async function toggleSave(id, btn){
+  const was = saved.has(id);
+  if(was){ saved.delete(id); await sb.from('gistly_saves').delete().eq('user_id', me.id).eq('post_id', id); }
+  else { saved.add(id); await sb.from('gistly_saves').insert({user_id:me.id, post_id:id}); }
+  if(!btn) return; btn.classList.toggle('on', !was);
+  const icn = btn.querySelector('.ic');
+  if(icn){ icn.innerHTML = ic('bookmark', 32, !was); btn.querySelector('span:last-child').textContent = was ? 'Save' : 'Saved'; }
+  else btn.innerHTML = ic('bookmark', 20, !was) + (was ? '' : ' Saved');
+}
+function sharePost(id, text, btn){
+  const url = location.origin + location.pathname + '?n=post&r=' + id;
+  if(navigator.share) navigator.share({title:'Gistly', text:(text||'Check this out on Gistly').slice(0,100), url}).catch(() => {});
+  else if(navigator.clipboard){ navigator.clipboard.writeText(url); const l = btn && btn.querySelector('span:last-child'); if(l) l.textContent = 'Copied'; else alert('Link copied'); }
+}
+const reelItem = p => {
+  const a = profs.get(p.author) || {username:'user'}, lk = (p.gistly_likes&&p.gistly_likes[0]?.count)||0, cm = (p.gistly_comments&&p.gistly_comments[0]?.count)||0;
+  const on = myLikes.has(p.id), sv = saved.has(p.id), showFollow = p.author !== me.id && !following.has(p.author);
+  const media = !p.media_url ? `<div class="rtxt">${esc(p.body)}</div>` : p.media_kind==='video' ? `<video src="${esc(p.media_url)}" loop playsinline muted preload="none"></video>` : `<img class="m" src="${esc(p.media_url)}" alt="">`;
+  return `<div class="rl${p.media_url ? '' : ' txt'}" data-pid="${p.id}">${media}
+  <div class="ov"><b data-u="${p.author}" style="cursor:pointer">@${esc(a.username)}</b> <small style="opacity:.75">${ago(p.created_at)}</small>${p.media_url && p.body ? `<p>${esc(p.body)}</p>` : ''}</div>
+  <div class="side"><div class="sav"><button data-u="${p.author}" aria-label="Open profile">${avatar(a)}</button>${showFollow ? `<button class="fol" data-a="rfollow" aria-label="Follow">${ic('plus',14)}</button>` : ''}</div>
+  <button data-a="rlike" class="${on?'on':''}" aria-label="Like"><span class="ic">${ic('heart',34,on)}</span><span>${lk}</span></button>
+  <button data-a="rcm" aria-label="Comments"><span class="ic">${ic('comment',32)}</span><span>${cm}</span></button>
+  <button data-a="rsave" class="${sv?'on':''}" aria-label="Save"><span class="ic">${ic('bookmark',32,sv)}</span><span>${sv?'Saved':'Save'}</span></button>
+  <button data-a="rshare" aria-label="Share"><span class="ic">${ic('share',32)}</span><span>Share</span></button>
+  <button data-a="rmore" aria-label="More"><span class="ic">${ic('more',30)}</span></button></div></div>`;
+};
+function observeReels(root){
+  root = root || $('#rl-list'); if(rio) rio.disconnect();
+  rio = new IntersectionObserver(es => es.forEach(en => { const v = en.target.querySelector('video'); if(!v) return;
+    if(en.isIntersecting && en.intersectionRatio > .7){ v.muted = rlMuted; v.preload = 'auto'; if(!low() && !document.hidden) v.play().catch(() => {}); } else v.pause(); }), {root, threshold:[.7]});
+  root.querySelectorAll('.rl').forEach(el => rio.observe(el));
+}
+function openReels(list, startId){
+  rlPosts = list; view('v-reels'); const box = $('#rl-list'); box.innerHTML = list.map(reelItem).join('');
+  paintMute();
+  box.onclick = reelClick; observeReels();
+  const el = box.querySelector(`[data-pid="${startId}"]`); if(el) box.scrollTop = el.offsetTop;
+}
+function stopReels(){ document.querySelectorAll('video').forEach(v => v.pause()); }
+$('#rl-back').onclick = () => { stopReels(); $('#rl-list').innerHTML = ''; view('v-main'); };
+$('#rl-mute').onclick = toggleMute;
+function openReelsFrom(id){ const m = lastPosts.filter(p => p.media_url); openReels(m.length ? m : lastPosts, id); }
+async function openAllReels(){
+  const l = await postList(null), m = (l||[]).filter(p => p.media_url);
+  if(!m.length){ alert('No photos or videos yet. Be the first to post one!'); return; } openReels(m, m[0].id);
+}
+async function openPostById(id){
+  const {data} = await sb.from('gistly_posts').select('*, gistly_likes(count), gistly_comments(count)').eq('id', id).maybeSingle();
+  if(!data){ feedTab = 'posts'; setTab('discover'); return; }
+  if(!profs.has(data.author)){ const {data:a} = await sb.from('gistly_profiles').select('*').eq('id', data.author).maybeSingle(); if(a) profs.set(a.id, a); }
+  const {data:l} = await sb.from('gistly_likes').select('post_id').eq('user_id', me.id).eq('post_id', id); (l||[]).forEach(x => myLikes.add(x.post_id));
+  openReels([data], data.id);
+}
+async function openSaved(){
+  const {data} = await sb.from('gistly_saves').select('post_id, gistly_posts(*, gistly_likes(count), gistly_comments(count))').eq('user_id', me.id).order('created_at', {ascending:false}).limit(50);
+  const list = (data||[]).map(x => x.gistly_posts).filter(Boolean);
+  if(!list.length){ alert('Nothing saved yet. Tap the save icon on a post to save it.'); return; }
+  const need = [...new Set(list.map(x => x.author))].filter(i => !profs.has(i));
+  if(need.length){ const {data:ps} = await sb.from('gistly_profiles').select('*').in('id', need); (ps||[]).forEach(x => profs.set(x.id, x)); }
+  const {data:l} = await sb.from('gistly_likes').select('post_id').eq('user_id', me.id).in('post_id', list.map(x => x.id)); (l||[]).forEach(x => myLikes.add(x.post_id));
+  openReels(list, list[0].id);
+}
+function burst(item, e){
+  const r = item.getBoundingClientRect(), x = (e && e.clientX ? e.clientX - r.left : r.width/2), y = (e && e.clientY ? e.clientY - r.top : r.height/2);
+  const h = document.createElement('div'); h.className = 'heart'; h.style.left = (x-48) + 'px'; h.style.top = (y-48) + 'px'; h.style.setProperty('--rot', (Math.random()*30-15) + 'deg');
+  h.innerHTML = ic('heart', 96, true) + Array.from({length:6}, (_,i) => `<i style="--dx:${(Math.random()*120-60).toFixed(0)}px;--dy:${(-60-Math.random()*70).toFixed(0)}px;animation-delay:${i*40}ms">${ic('heart',16,true)}</i>`).join('');
+  item.appendChild(h); setTimeout(() => h.remove(), 900);
+}
+async function toggleLike(id, item){
+  const was = myLikes.has(id), btn = item.querySelector('[data-a=rlike]'), cnt = btn.querySelector('span:last-child');
+  const n = Math.max(0, (parseInt(cnt.textContent)||0) + (was ? -1 : 1));
+  if(was){ myLikes.delete(id); await sb.from('gistly_likes').delete().eq('post_id', id).eq('user_id', me.id); }
+  else { myLikes.add(id); await sb.from('gistly_likes').insert({post_id:id, user_id:me.id}); }
+  btn.classList.toggle('on', !was); btn.querySelector('.ic').innerHTML = ic('heart', 34, !was); cnt.textContent = n;
+}
+async function reelClick(e){
+  const item = e.target.closest('.rl'); if(!item) return; const id = item.dataset.pid, p = rlPosts.find(x => x.id === id); if(!p) return;
+  const u = e.target.closest('[data-u]'); if(u){ stopReels(); openUser(u.dataset.u); return; }
+  const b = e.target.closest('button[data-a]');
+  if(!b){
+    const now = Date.now();
+    if(now - lastTap < 300){ lastTap = 0; if(!myLikes.has(id)) await toggleLike(id, item); burst(item, e); return; }
+    lastTap = now;
+    setTimeout(() => { if(lastTap && Date.now() - lastTap >= 290){ lastTap = 0; const v = item.querySelector('video'); if(v){ if(v.paused) v.play().catch(() => {}); else v.pause(); } } }, 300);
+    return;
+  }
+  const a = b.dataset.a;
+  if(a==='rlike') toggleLike(id, item);
+  else if(a==='rcm') openReelComments(id, item);
+  else if(a==='rsave') toggleSave(id, b);
+  else if(a==='rshare') sharePost(id, p.body, b);
+  else if(a==='rfollow'){ await sb.from('gistly_follows').insert({follower:me.id, followee:p.author}); following.add(p.author); b.remove(); }
+  else if(a==='rmore'){
+    if(p.author === me.id){ if(confirm('Delete this post?')){ await sb.from('gistly_posts').delete().eq('id', id); item.remove(); } }
+    else { const why = await askReason(); if(why){ const {error} = await sb.from('gistly_reports').insert({reporter:me.id, post_id:id, reason:why}); alert(error ? 'Could not report.' : 'Reported. Thank you.'); } }
+  }
+}
+async function openReelComments(id, item){
+  const m = $('#modal');
+  m.innerHTML = '<div class="mbox" style="max-height:75%"><b>Comments</b><div id="rc-list" style="overflow-y:auto;flex:1;min-height:90px"></div><div style="display:flex;gap:8px"><input id="rc-in" placeholder="Add a comment" maxlength="500" aria-label="Comment"><button class="btn sm" id="rc-go">Send</button></div></div>';
+  m.classList.add('on'); m.onclick = e => { if(e.target === m) m.classList.remove('on'); };
+  const load = async () => {
+    const box = $('#rc-list'); box.innerHTML = '<small>Loading…</small>';
+    const {data} = await sb.from('gistly_comments').select('*').eq('post_id', id).order('created_at').limit(60);
+    const need = [...new Set((data||[]).map(c => c.author))].filter(i => !profs.has(i));
+    if(need.length){ const {data:ps} = await sb.from('gistly_profiles').select('*').in('id', need); (ps||[]).forEach(x => profs.set(x.id, x)); }
+    box.innerHTML = (data||[]).length ? data.map(c => `<div style="padding:6px 0;font-size:14px"><b>${esc(nameOf(profs.get(c.author)||{username:'user'}))}</b> ${esc(c.body)} <small style="color:var(--sub)">${ago(c.created_at)}</small></div>`).join('') : '<small style="color:var(--sub)">No comments yet. Be the first.</small>';
+    const cb = item.querySelector('[data-a=rcm] span:last-child'); if(cb) cb.textContent = (data||[]).length;
+  };
+  load();
+  $('#rc-go').onclick = async () => { const t = $('#rc-in').value.trim(); if(!t) return;
+    const {error} = await sb.from('gistly_comments').insert({post_id:id, author:me.id, body:t}); if(!error){ $('#rc-in').value = ''; load(); } };
+}
+
+/* ---------- Notification prompts ---------- */
+function pushSupported(){ return 'Notification' in window && 'serviceWorker' in navigator && 'PushManager' in window; }
+async function ensurePush(){
+  try{
+    if(!pushSupported() || Notification.permission !== 'granted') return;
+    const reg = await navigator.serviceWorker.ready;
+    const sub = (await reg.pushManager.getSubscription()) || await reg.pushManager.subscribe({userVisibleOnly:true, applicationServerKey:u8(VAPID)});
+    const j = sub.toJSON(); await sb.rpc('gistly_save_sub', {e:j.endpoint, p:j.keys.p256dh, a:j.keys.auth});
+  }catch(e){}
+}
+function askNotifs(next){
+  if(!pushSupported() || Notification.permission !== 'default'){ next(); return; }
+  view('v-perm');
+  $('#pm-on').onclick = async () => { await enablePush(); next(); };
+  $('#pm-skip').onclick = next;
+}
+function paintNBar(){
+  const b = $('#nbar'); if(!b) return;
+  const dis = +(localStorage.getItem('g-nb') || 0);
+  if(!pushSupported() || Notification.permission !== 'default' || Date.now() - dis < 3*864e5){ b.innerHTML = ''; return; }
+  b.innerHTML = `<div class="nb"><span class="nbi">${ic('bell',22)}</span><div><b>Turn on notifications</b><small>Get a ping for new messages, even when Gistly is closed.</small></div><button class="btn sm" id="nb-on">Turn on</button><button class="nbx" id="nb-x" aria-label="Dismiss">${ic('close',18)}</button></div>`;
+  $('#nb-on').onclick = async () => { await enablePush(); paintNBar(); };
+  $('#nb-x').onclick = () => { localStorage.setItem('g-nb', Date.now()); paintNBar(); };
+}
+
+/* ---------- Stop videos when you leave ---------- */
+function resumeVisible(){
+  if(low() || document.hidden) return;
+  const root = $('#v-reels').classList.contains('on') ? $('#rl-list') : ($('#v-main').classList.contains('on') && tab === 'discover' ? $('#fv') : null);
+  if(!root) return; const rr = root.getBoundingClientRect();
+  root.querySelectorAll('.rl').forEach(el => { const r = el.getBoundingClientRect(), vis = Math.min(r.bottom, rr.bottom) - Math.max(r.top, rr.top), v = el.querySelector('video');
+    if(v && vis > r.height * .7){ v.muted = rlMuted; v.play().catch(() => {}); } });
+}
+document.addEventListener('visibilitychange', () => { if(document.hidden) document.querySelectorAll('video').forEach(v => v.pause()); else resumeVisible(); });
+addEventListener('pagehide', () => document.querySelectorAll('video').forEach(v => v.pause()));
+
+/* ---------- Whot ---------- */
+const SHAPES = {o:'#D7263D', t:'#1B9E5A', x:'#7A3FB0', q:'#2457B8', s:'#F2A41D'}, SHAPE_NAME = {o:'Circle', t:'Triangle', x:'Cross', q:'Square', s:'Star'};
+function shapeSvg(sh, cx, cy, r, fill){
+  if(sh === 'o') return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}"/>`;
+  if(sh === 'q') return `<rect x="${cx-r}" y="${cy-r}" width="${2*r}" height="${2*r}" rx="2" fill="${fill}"/>`;
+  if(sh === 't') return `<polygon points="${cx},${cy-r} ${cx+r*1.1},${cy+r*.8} ${cx-r*1.1},${cy+r*.8}" fill="${fill}"/>`;
+  if(sh === 'x'){ const a = r*.38; return `<polygon points="${cx-a},${cy-r} ${cx+a},${cy-r} ${cx+a},${cy-a} ${cx+r},${cy-a} ${cx+r},${cy+a} ${cx+a},${cy+a} ${cx+a},${cy+r} ${cx-a},${cy+r} ${cx-a},${cy+a} ${cx-r},${cy+a} ${cx-r},${cy-a} ${cx-a},${cy-a}" fill="${fill}"/>`; }
+  const pts = []; for(let i = 0; i < 10; i++){ const an = -Math.PI/2 + i*Math.PI/5, rr = i%2 ? r*.45 : r; pts.push((cx + rr*Math.cos(an)).toFixed(1) + ',' + (cy + rr*Math.sin(an)).toFixed(1)); }
+  return `<polygon points="${pts.join(' ')}" fill="${fill}"/>`;
+}
+const shapeIcon = (sh, n) => `<svg width="${n}" height="${n}" viewBox="0 0 24 24" aria-hidden="true">${shapeSvg(sh, 12, 12, 9, SHAPES[sh])}</svg>`;
+function whotFace(c){
+  const sh = c[0], n = c.slice(1);
+  if(sh === 'w') return `<svg viewBox="0 0 70 100" class="wf" aria-label="Whot 20"><rect x="1.5" y="1.5" width="67" height="97" rx="8" fill="#1f1730" stroke="#F2B134" stroke-width="3"/><text x="35" y="46" text-anchor="middle" font-size="17" font-weight="800" fill="#F2B134" font-family="system-ui,sans-serif">WHOT</text><text x="35" y="72" text-anchor="middle" font-size="22" font-weight="800" fill="#fff" font-family="system-ui,sans-serif">20</text></svg>`;
+  const col = SHAPES[sh], corner = `<text x="8" y="20" font-size="15" font-weight="800" fill="${col}" font-family="system-ui,sans-serif">${n}</text>${shapeSvg(sh, 11, 28, 4.5, col)}`;
+  return `<svg viewBox="0 0 70 100" class="wf" aria-label="${SHAPE_NAME[sh]} ${n}"><rect x="1.5" y="1.5" width="67" height="97" rx="8" fill="#fff" stroke="${col}" stroke-width="3"/>${corner}<g transform="rotate(180 35 50)">${corner}</g>${shapeSvg(sh, 35, 50, 17, col)}</svg>`;
+}
+let whotLastTop = null;
+function whotLog(g){
+  const L = (g.state || {}).last; if(!L) return 'Match the shape or the number. Play a Whot card any time.';
+  const mine = L.by === me.id, who = mine ? 'You' : gOppName(g), other = mine ? gOppName(g) : 'You';
+  return ({hold:`Hold On! ${who}${mine?' go':' goes'} again.`, pick2:`Pick Two! ${other} picked up 2. ${who}${mine?' go':' goes'} again.`, pick3:`Pick Three! ${other} picked up 3. ${who}${mine?' go':' goes'} again.`,
+    market:`General Market! ${other} picked up 1. ${who}${mine?' go':' goes'} again.`, whot:`${who} played Whot and called a shape.`, draw:`${who} picked from the market.`, play:`${who} played a card.`})[L.effect] || '';
+}
+async function paintWhot(){
+  const g = curG, box = $('#wx'); if(!g || !box) return;
+  const {data} = await sb.from('gistly_hands').select('cards').eq('game_id', g.id).maybeSingle();
+  if(!curG || curG.id !== g.id || !$('#wx')) return;
+  const hand = (data && data.cards) || [], st = g.state || {}, my = g.status === 'playing' && g.turn === me.id, opp = g.p1 === me.id ? g.p2 : g.p1;
+  const oc = (st.counts && st.counts[opp]) || 0, want = st.want, top = st.top || 'o1';
+  const ok = c => my && (c[0] === 'w' || (want ? c[0] === want : (c[0] === top[0] || c.slice(1) === top.slice(1))));
+  const pop = top !== whotLastTop; whotLastTop = top;
+  box.innerHTML = `<div class="wt"><div class="wopp">${Array.from({length:Math.min(oc,14)}, () => '<span class="wb"></span>').join('')}<small>${esc(gOppName(g))} has ${oc} card${oc===1?'':'s'}</small></div>
+  <div class="wmid"><button class="wmk ${my?'can':''}" data-w="draw" aria-label="Pick a card from the market"><span class="wb big"></span><span>Market · ${st.market||0}</span></button>
+  <div class="wtop ${pop?'pop':''}">${whotFace(top)}${want ? `<div class="wwant" title="${SHAPE_NAME[want]}">${shapeIcon(want, 22)}</div>` : ''}</div></div>
+  <p class="hint" style="text-align:center;padding:0 16px">${want ? 'Shape called: ' + SHAPE_NAME[want] + '. ' : ''}${esc(whotLog(g))}</p>
+  <div class="whand">${hand.map(c => `<button class="wc ${ok(c)?'ok':''}" data-c="${c}" ${my?'':'disabled'} aria-label="Play ${c[0]==='w'?'Whot 20':SHAPE_NAME[c[0]]+' '+c.slice(1)}">${whotFace(c)}</button>`).join('')}</div></div>`;
+  const send = async (fn, args) => {
+    const {error} = await sb.rpc(fn, args);
+    const n = await pullGame(g.id); if(n){ curG = n; renderGame(); }
+    if(error) $('#g-line').textContent = error.message;
+  };
+  box.onclick = async e => {
+    if(!my) return;
+    if(e.target.closest('[data-w=draw]')){ send('gistly_whot_draw', {gid:g.id}); return; }
+    const b = e.target.closest('.wc'); if(!b) return; const c = b.dataset.c;
+    if(!ok(c)){ $('#g-line').textContent = 'That card does not match. Match the shape or the number.'; return; }
+    if(c[0] === 'w'){
+      const m = $('#modal');
+      m.innerHTML = `<div class="mbox"><b>Which shape do you want?</b><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:6px 0">${Object.keys(SHAPES).map(k => `<button class="btn ghost" data-r="${k}" style="width:auto;display:flex;gap:8px;align-items:center;padding:0 16px">${shapeIcon(k, 26)} ${SHAPE_NAME[k]}</button>`).join('')}</div><button class="chip" data-r="">Cancel</button></div>`;
+      m.classList.add('on');
+      m.onclick = ev => { const bb = ev.target.closest('button'); if(!bb && ev.target !== m) return; m.classList.remove('on'); if(bb && bb.dataset.r) send('gistly_whot_play', {gid:g.id, card:c, pick:bb.dataset.r}); };
+      return;
+    }
+    send('gistly_whot_play', {gid:g.id, card:c});
+  };
+}
+
+/* ================= Groups, channels, voice notes, files, message menu ================= */
+Object.assign(IC, {
+  clip:'<path d="M21 12.500l-8.500 8.500a5.500 5.500 0 01-8-8l9-9a3.700 3.700 0 015.300 5.300l-9 9a1.800 1.800 0 01-2.600-2.600l8-8"/>',
+  mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/>',
+  file:'<path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/>',
+  copy:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 012-2h9"/>',
+  reply:'<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 016 6v3"/>',
+  users:'<circle cx="9" cy="8" r="3.500"/><path d="M2.500 20c.500-3.500 3-5.500 6.500-5.500s6 2 6.500 5.500"/><circle cx="17.500" cy="9" r="2.800"/><path d="M17 14.500c2.500 0 4 1.500 4.500 4.500"/>',
+  megaphone:'<path d="M3 11v3a1 1 0 001 1h2l7 4V6L6 10H4a1 1 0 00-1 1z"/><path d="M17 8.500a5 5 0 010 7"/>',
+  pause:'<path d="M8 5v14M16 5v14" stroke-width="3"/>'
+});
+const groups = new Map(), gmsgs = new Map(), rx = new Map(), hidden = new Set(), allow = new Map(), urlCache = new Map(), loadedImg = new Set();
+let gmem = new Map(), grpCur = null, replyTo = null, gchan = null, gnKind = 'group', rec = null;
+const gsel = new Map(), vn = {a:null, path:null, w:null}, EMOJIS = ['👍','❤️','😂','😮','😢','🙏'];
+const DOC = {pdf:'application/pdf', doc:'application/msword', docx:'application/vnd.openxmlformats-officedocument.wordprocessingml.document', xls:'application/vnd.ms-excel', xlsx:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', ppt:'application/vnd.ms-powerpoint', pptx:'application/vnd.openxmlformats-officedocument.presentationml.presentation', txt:'text/plain', zip:'application/zip'};
+const EXT = Object.assign(Object.fromEntries(Object.entries(DOC).map(([e,m]) => [m,e])), {'audio/webm':'webm','audio/mp4':'m4a','audio/ogg':'ogg','image/jpeg':'jpg','video/mp4':'mp4','video/webm':'webm','video/quicktime':'mov'});
+const fmtDur = x => { x = Math.max(0, Math.round(x||0)); return Math.floor(x/60) + ':' + String(x%60).padStart(2,'0'); };
+const fmtSize = b => !b ? '' : b > 1048576 ? (b/1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b/1024)) + ' KB';
+function toast(t){ const el = $('#toast'); el.textContent = t; el.style.display = 'block'; clearTimeout(toast.t); toast.t = setTimeout(() => el.style.display = 'none', 3400); }
+const nameFor = id => nameOf(profs.get(id) || {username:'user'});
+function previewOf(m){ if(m.deleted_at) return 'This message was deleted'; return ({voice:'Voice note', image:'Photo', video:'Video', file:m.media_name||'File'})[m.kind] || m.body; }
+const findMsg = id => msgs.get(id) || gmsgs.get(id);
+async function ensureProfiles(ids){ const need = [...new Set(ids)].filter(i => i && !profs.has(i)); if(!need.length) return; const {data} = await sb.from('gistly_profiles').select('*').in('id', need); (data||[]).forEach(p => profs.set(p.id, p)); }
+const roleOf = gid => (gmem.get(gid)||{}).role || null;
+function canPost(gid){ const g = groups.get(gid), r = roleOf(gid); return !!g && (r === 'owner' || r === 'admin' || (g.kind === 'group' && !g.admins_only && r === 'member')); }
+const groupAvatar = (g, cls) => g.photo_url ? `<div class="av ${cls||''}"><img src="${esc(g.photo_url)}" alt=""></div>` : `<div class="av ${cls||''}" style="background:${g.kind==='channel'?'#E1ECFF':'#C8F4DF'};color:#242832">${ic(g.kind==='channel'?'megaphone':'users', cls==='sm'?18:22)}</div>`;
+async function signed(path){ const c = urlCache.get(path); if(c && c.exp > Date.now()) return c.url; const {data} = await sb.storage.from('gistly-chat').createSignedUrl(path, 3600); if(data){ urlCache.set(path, {url:data.signedUrl, exp:Date.now()+3300000}); return data.signedUrl; } return null; }
+
+/* ----- loading ----- */
+function addRx(x){ const a = rx.get(x.msg_id) || [], i = a.findIndex(y => y.user_id === x.user_id); if(i >= 0) a[i] = x; else a.push(x); rx.set(x.msg_id, a); }
+function delRx(x){ rx.set(x.msg_id, (rx.get(x.msg_id)||[]).filter(y => y.user_id !== x.user_id)); }
+async function loadExtras(){
+  const [h, a, r] = await Promise.all([sb.from('gistly_msg_hidden').select('msg_id'), sb.from('gistly_dm_allow').select('*'), sb.rpc('gistly_my_reactions')]);
+  hidden.clear(); (h.data||[]).forEach(x => hidden.add(x.msg_id));
+  allow.clear(); (a.data||[]).forEach(x => allow.set(x.other, x.status));
+  rx.clear(); (r.data||[]).forEach(addRx); refresh();
+}
+async function loadGroups(){
+  const {data:mm} = await sb.from('gistly_group_members').select('*').eq('user_id', me.id);
+  gmem = new Map((mm||[]).map(x => [x.group_id, x])); const ids = [...gmem.keys()]; if(!ids.length){ refresh(); return; }
+  const [{data:gs}, {data:ms}] = await Promise.all([sb.from('gistly_groups').select('*').in('id', ids), sb.from('gistly_group_messages').select('*').in('group_id', ids).order('created_at', {ascending:false}).limit(300)]);
+  (gs||[]).forEach(g => groups.set(g.id, g)); (ms||[]).forEach(m => gmsgs.set(m.id, m)); await ensureProfiles((ms||[]).map(m => m.sender)); refresh();
+}
+async function loadGroupMsgs(gid){
+  const {data} = await sb.from('gistly_group_messages').select('*').eq('group_id', gid).order('created_at', {ascending:false}).limit(100);
+  (data||[]).forEach(m => gmsgs.set(m.id, m)); await ensureProfiles((data||[]).map(m => m.sender));
+}
+function liveGroups(){
+  if(gchan) sb.removeChannel(gchan);
+  gchan = sb.channel('gistly-grp')
+    .on('postgres_changes', {event:'*', schema:'public', table:'gistly_group_messages'}, async pl => {
+      const m = pl.new; if(!m || !m.id) return; if(!gmem.has(m.group_id) && !(grpCur && grpCur.id === m.group_id)) return;
+      gmsgs.set(m.id, m); await ensureProfiles([m.sender]);
+      if(pl.eventType === 'INSERT' && m.sender !== me.id && grpCur && grpCur.id === m.group_id && $('#v-group').classList.contains('on')){ readGroup(m.group_id); if(navigator.vibrate) navigator.vibrate(25); }
+      refresh(); })
+    .on('postgres_changes', {event:'*', schema:'public', table:'gistly_group_members', filter:'user_id=eq.'+me.id}, async () => { await loadGroups(); })
+    .on('postgres_changes', {event:'*', schema:'public', table:'gistly_reactions'}, pl => {
+      if(pl.eventType === 'DELETE'){ if(pl.old && pl.old.msg_id) delRx(pl.old); } else if(pl.new && (msgs.has(pl.new.msg_id) || gmsgs.has(pl.new.msg_id))) addRx(pl.new);
+      refresh(); })
+    .subscribe();
+}
+function groupItems(){
+  return [...gmem.keys()].map(id => groups.get(id)).filter(Boolean).map(g => {
+    let last = null, unread = 0; const lr = new Date((gmem.get(g.id)||{}).last_read || 0);
+    gmsgs.forEach(m => { if(m.group_id !== g.id || hidden.has(m.id)) return; if(!last || m.created_at > last.created_at) last = m; if(m.sender !== me.id && new Date(m.created_at) > lr) unread++; });
+    return {t:'g', id:g.id, g, last, unread, time:(last ? last.created_at : g.created_at)};
+  });
+}
+function requestIds(){
+  if(!me || me.dm_policy !== 'approved') return [];
+  const sent = new Set(), got = new Set();
+  msgs.forEach(m => { if(m.sender === me.id) sent.add(m.receiver); else if(m.receiver === me.id) got.add(m.sender); });
+  return [...got].filter(p => !sent.has(p) && !allow.get(p));
+}
+
+/* ----- one message bubble (used in chats, groups and channels) ----- */
+function content(m){
+  if(m.kind === 'voice') return `<div class="vn" data-path="${esc(m.media_path)}" data-dur="${m.media_dur||0}"><button class="vnp" data-vn="play" aria-label="Play voice note">${ic('play',18)}</button><div class="vnbar"><i></i></div><span class="vnt">${fmtDur(m.media_dur)}</span><button class="vns" data-vn="speed" aria-label="Playback speed">1x</button></div>`;
+  if(m.kind === 'image') return `<div class="mimg" data-img="${esc(m.media_path)}"></div>`;
+  if(m.kind === 'video') return `<button class="mld" data-vid="${esc(m.media_path)}" style="padding:22px 36px;background:rgba(0,0,0,.06);border-radius:12px">${ic('play',30)}<span>Play video${m.media_size ? ' · ' + fmtSize(m.media_size) : ''}</span></button>`;
+  if(m.kind === 'file') return `<button class="fil" data-file="${esc(m.media_path)}">${ic('file',26)}<span><b>${esc(m.media_name||'File')}</b><small>${fmtSize(m.media_size)}</small></span></button>`;
+  return esc(m.body);
+}
+function rxHtml(mid){
+  const a = rx.get(mid) || []; if(!a.length) return '';
+  const by = {}; a.forEach(x => { (by[x.emoji] = by[x.emoji] || []).push(x.user_id); });
+  return '<div class="rxs">' + Object.entries(by).map(([e, u]) => `<button data-rx="${e}" class="${u.includes(me.id)?'me':''}">${e} ${u.length}</button>`).join('') + '</div>';
+}
+function bubble(m, o){
+  const del = !!m.deleted_at; let inner = '';
+  if(del) inner = '<i style="color:var(--sub)">This message was deleted</i>';
+  else {
+    if(o.name) inner += `<span class="sn">${esc(o.name)}</span>`;
+    if(m.fwd) inner += `<div class="fw">${ic('share',12)} Forwarded</div>`;
+    if(m.reply_to){ const r = findMsg(m.reply_to); if(r) inner += `<div class="rq"><b>${r.sender===me.id?'You':esc(nameFor(r.sender))}</b><span>${esc(previewOf(r))}</span></div>`; }
+    inner += content(m);
+  }
+  const tick = !o.mine ? '' : m.queued ? '<span class="tk">'+ic('clock',13)+'</span>' : o.grp ? '<span class="tk">'+ic('check',17)+'</span>' : m.read_at ? '<span class="tk rd">'+ic('checks',17)+'</span>' : m.delivered_at ? '<span class="tk">'+ic('checks',17)+'</span>' : '<span class="tk">'+ic('check',17)+'</span>';
+  return `<div class="b ${o.mine?'out':'in'}${o.first?' first':''}${o.ch?' ch':''}${del?' del':''}" data-mid="${m.id}"${m.queued?' data-q="1"':''}>${inner}<small>${fmt(m.created_at)} ${tick}</small>${del?'':rxHtml(m.id)}</div>`;
+}
+function hydrateMedia(box){
+  box.querySelectorAll('.mimg[data-img]:not([data-ok])').forEach(async el => {
+    const path = el.dataset.img;
+    if(low() && !loadedImg.has(path)){ el.innerHTML = `<button class="mld" data-load="1">${ic('image',26)}<span>Tap to load photo</span></button>`; return; }
+    el.dataset.ok = '1'; const url = await signed(path); if(url) el.innerHTML = `<img src="${url}" alt="Photo" loading="lazy">`;
+  });
+}
+function stopVn(){ if(vn.a){ try{ vn.a.pause(); }catch(e){} } vn.a = null; vn.path = null; }
+async function mediaClick(e){
+  const rb = e.target.closest('[data-rx]');
+  if(rb){ const b = rb.closest('.b'); const m = b && findMsg(b.dataset.mid); if(m) toggleReact(m, rb.dataset.rx); return; }
+  const pb = e.target.closest('[data-vn]');
+  if(pb){
+    const w = pb.closest('.vn'), path = w.dataset.path;
+    if(pb.dataset.vn === 'speed'){ const sp = [1, 1.5, 2], nx = sp[(sp.indexOf(+w.dataset.sp || 1) + 1) % 3]; w.dataset.sp = nx; pb.textContent = nx + 'x'; if(vn.path === path && vn.a) vn.a.playbackRate = nx; return; }
+    if(vn.path === path && vn.a){ if(vn.a.paused) vn.a.play().catch(() => {}); else vn.a.pause(); return; }
+    stopVn(); const url = await signed(path); if(!url){ toast('Could not load the voice note.'); return; }
+    const a = new Audio(url); a.preload = 'auto'; a.playbackRate = +w.dataset.sp || 1; vn.a = a; vn.path = path; vn.w = w;
+    a.ontimeupdate = () => { const d = (isFinite(a.duration) && a.duration) || +w.dataset.dur || 1; const bar = w.querySelector('.vnbar i'); if(bar) bar.style.width = Math.min(100, a.currentTime/d*100) + '%'; const t = w.querySelector('.vnt'); if(t) t.textContent = fmtDur(Math.max(0, d - a.currentTime)); };
+    a.onplay = () => { const x = w.querySelector('.vnp'); if(x) x.innerHTML = ic('pause', 18); }; a.onpause = () => { const x = w.querySelector('.vnp'); if(x) x.innerHTML = ic('play', 18); };
+    a.onended = () => { const x = w.querySelector('.vnp'); if(x) x.innerHTML = ic('play', 18); const bar = w.querySelector('.vnbar i'); if(bar) bar.style.width = '0'; stopVn(); };
+    a.play().catch(() => {}); return;
+  }
+  const ld = e.target.closest('[data-load]'); if(ld){ const el = ld.closest('.mimg'); loadedImg.add(el.dataset.img); delete el.dataset.ok; hydrateMedia(el.parentElement); return; }
+  const im = e.target.closest('.mimg img'); if(im){ const m = $('#modal'); m.innerHTML = `<div class="mbox" style="background:#000;align-items:center"><img src="${im.src}" alt="Photo" style="max-width:100%;max-height:70vh;border-radius:8px"><button class="chip" data-x="1">Close</button></div>`; m.classList.add('on'); m.onclick = ev => { if(ev.target === m || ev.target.closest('[data-x]')) m.classList.remove('on'); }; return; }
+  const vd = e.target.closest('[data-vid]'); if(vd){ const url = await signed(vd.dataset.vid); if(!url){ toast('Could not load the video.'); return; } vd.outerHTML = `<video src="${url}" controls autoplay playsinline style="max-width:250px;width:100%;border-radius:12px"></video>`; return; }
+  const fl = e.target.closest('[data-file]'); if(fl){ const url = await signed(fl.dataset.file); if(url) window.open(url, '_blank'); else toast('Could not open the file.'); }
+}
+['#msgs', '#gmsgs'].forEach(sel => $(sel).addEventListener('click', mediaClick));
+
+/* ----- long-press menu: react, reply, forward, copy, delete ----- */
+function bindMenu(box){
+  let t = null, sx = 0, sy = 0; const cancel = () => { clearTimeout(t); t = null; };
+  box.addEventListener('pointerdown', e => { const b = e.target.closest('.b[data-mid]'); if(!b || e.target.closest('button,video,audio,a,input')) return; sx = e.clientX; sy = e.clientY;
+    t = setTimeout(() => { t = null; if(navigator.vibrate) navigator.vibrate(15); openMsgMenu(findMsg(b.dataset.mid)); }, 420); });
+  box.addEventListener('pointermove', e => { if(t && (Math.abs(e.clientX-sx) > 10 || Math.abs(e.clientY-sy) > 10)) cancel(); });
+  ['pointerup', 'pointercancel'].forEach(ev => box.addEventListener(ev, cancel)); box.addEventListener('scroll', cancel);
+  box.addEventListener('contextmenu', e => { const b = e.target.closest('.b[data-mid]'); if(b){ e.preventDefault(); cancel(); openMsgMenu(findMsg(b.dataset.mid)); } });
+}
+bindMenu($('#msgs')); bindMenu($('#gmsgs'));
+function openMsgMenu(m){
+  if(!m || m.queued) return; const isG = gmsgs.has(m.id), del = !!m.deleted_at, myrx = (rx.get(m.id)||[]).find(x => x.user_id === me.id), mm = $('#modal');
+  mm.innerHTML = `<div class="mbox msheet">${del ? '' : `<div class="rxrow">${EMOJIS.map(e => `<button data-e="${e}" class="${myrx && myrx.emoji===e ? 'me' : ''}" aria-label="React ${e}">${e}</button>`).join('')}</div>
+    <button class="act" data-m="reply">${ic('reply',22)} Reply</button><button class="act" data-m="fwd">${ic('share',22)} Forward</button>${m.kind==='text' ? `<button class="act" data-m="copy">${ic('copy',22)} Copy</button>` : ''}`}
+    <button class="act" data-m="del" style="color:var(--err)">${ic('trash',22)} Delete</button><button class="chip" data-m="x">Cancel</button></div>`;
+  mm.classList.add('on');
+  mm.onclick = e => { const t = e.target.closest('button'); if(!t){ if(e.target === mm) mm.classList.remove('on'); return; } mm.classList.remove('on');
+    if(t.dataset.e) toggleReact(m, t.dataset.e); else if(t.dataset.m === 'reply') setReply(m); else if(t.dataset.m === 'fwd') openForward(m);
+    else if(t.dataset.m === 'copy'){ if(navigator.clipboard) navigator.clipboard.writeText(m.body); toast('Copied'); } else if(t.dataset.m === 'del') askDelete(m, isG); };
+}
+function askDelete(m, isG){
+  const mine = m.sender === me.id, recent = Date.now() - new Date(m.created_at) <= 9e5;
+  const all = isG ? ((mine && recent) || ['owner','admin'].includes(roleOf(m.group_id))) : (mine && recent), mm = $('#modal');
+  mm.innerHTML = `<div class="mbox msheet"><b>Delete message?</b><button class="act" data-d="me">Delete for me</button>${all ? '<button class="act" data-d="all" style="color:var(--err)">Delete for everyone</button>' : ''}<button class="chip" data-d="x">Cancel</button></div>`; mm.classList.add('on');
+  mm.onclick = async e => { const t = e.target.closest('button'); if(!t){ if(e.target === mm) mm.classList.remove('on'); return; } mm.classList.remove('on'); if(t.dataset.d === 'x') return;
+    const ev = t.dataset.d === 'all', {error} = await sb.rpc(isG ? 'gistly_delete_gmsg' : 'gistly_delete_msg', {mid:m.id, everyone:ev});
+    if(error){ toast(error.message.replace(/^.*?:\s*/, '')); return; }
+    if(ev){ m.deleted_at = new Date().toISOString(); m.body = 'This message was deleted'; m.kind = 'text'; m.media_path = null; } else hidden.add(m.id); refresh(); };
+}
+async function toggleReact(m, e){
+  const mine = (rx.get(m.id)||[]).find(x => x.user_id === me.id);
+  if(mine && mine.emoji === e){ delRx({msg_id:m.id, user_id:me.id}); refresh(); await sb.from('gistly_reactions').delete().eq('msg_id', m.id).eq('user_id', me.id); }
+  else { addRx({msg_id:m.id, user_id:me.id, emoji:e}); refresh(); const {error} = await sb.from('gistly_reactions').upsert({msg_id:m.id, user_id:me.id, emoji:e}, {onConflict:'msg_id,user_id'}); if(error) toast('Could not react.'); }
+}
+function setReply(m){ replyTo = {id:m.id, name:m.sender === me.id ? 'You' : nameFor(m.sender), text:previewOf(m)}; paintReply(); const ta2 = (grpCur && $('#v-group').classList.contains('on')) ? $('#g-text') : $('#c-text'); ta2.focus(); }
+function paintReply(){
+  ['c','g'].forEach(P => { const b = $('#'+P+'-reply'); if(!b) return; if(!replyTo){ b.classList.remove('on'); b.innerHTML = ''; return; }
+    b.classList.add('on'); b.innerHTML = `<div class="rb"><div><b>Replying to ${esc(replyTo.name)}</b><span>${esc(replyTo.text)}</span></div><button data-x="1" aria-label="Cancel reply">${ic('close',18)}</button></div>`; });
+}
+['c','g'].forEach(P => $('#'+P+'-reply').onclick = e => { if(e.target.closest('[data-x]')){ replyTo = null; paintReply(); } });
+function openForward(m){
+  const dm = convos().map(c => ({k:'d', id:c.id, name:nameFor(c.id), av:avatar(profs.get(c.id), 'sm')}));
+  const gs = [...gmem.keys()].map(id => groups.get(id)).filter(g => g && canPost(g.id)).map(g => ({k:'g', id:g.id, name:g.name, av:groupAvatar(g, 'sm')})), mm = $('#modal');
+  mm.innerHTML = `<div class="mbox msheet" style="max-height:75%"><b>Forward to…</b><div style="overflow-y:auto;flex:1">${[...dm, ...gs].map(x => `<button class="act" data-k="${x.k}" data-id="${x.id}">${x.av}<span>${esc(x.name)}</span></button>`).join('') || '<div class="hint">No chats yet.</div>'}</div><button class="chip" data-x="1">Cancel</button></div>`; mm.classList.add('on');
+  mm.onclick = async e => { const t = e.target.closest('button'); if(!t){ if(e.target === mm) mm.classList.remove('on'); return; } mm.classList.remove('on'); if(!t.dataset.k) return;
+    const base = {body:m.body, kind:m.kind, media_path:m.media_path, media_name:m.media_name, media_size:m.media_size, media_dur:m.media_dur, fwd:true};
+    const {error} = t.dataset.k === 'd' ? await sb.from('gistly_messages').insert({client_id:crypto.randomUUID(), sender:me.id, receiver:t.dataset.id, ...base}) : await sb.from('gistly_group_messages').insert({group_id:t.dataset.id, sender:me.id, ...base});
+    toast(error ? (/row-level/.test(error.message) ? 'They only accept messages from people they approve.' : 'Could not forward.') : 'Forwarded'); };
+}
+
+/* ----- writing: text, voice notes, photos, videos and files ----- */
+async function sendDM(p){
+  if(!cur) return false;
+  if(p.kind === 'text'){
+    const q = getQ(); q.push({client_id:crypto.randomUUID(), receiver:cur.id, body:p.body.slice(0,2000), created_at:new Date().toISOString(), reply_to:p.reply_to||null, fwd:!!p.fwd}); setQ(q); renderChat(true); flush(); return true;
+  }
+  if(!navigator.onLine){ toast("You're offline."); return false; }
+  const {data, error} = await sb.from('gistly_messages').insert({client_id:crypto.randomUUID(), sender:me.id, receiver:cur.id, body:p.body, kind:p.kind, media_path:p.media_path||null, media_name:p.media_name||null, media_size:p.media_size||null, media_dur:p.media_dur||null, reply_to:p.reply_to||null, fwd:!!p.fwd}).select().single();
+  if(error){ toast(/row-level/.test(error.message) ? 'They only accept messages from people they approve.' : 'Could not send. Try again.'); return false; }
+  msgs.set(data.id, data); renderChat(true); refresh(); return true;
+}
+async function sendGroup(p){
+  const g = grpCur; if(!g) return false; if(!navigator.onLine){ toast("You're offline."); return false; }
+  const {data, error} = await sb.from('gistly_group_messages').insert({group_id:g.id, sender:me.id, body:(p.body||'').slice(0,2000), kind:p.kind||'text', media_path:p.media_path||null, media_name:p.media_name||null, media_size:p.media_size||null, media_dur:p.media_dur||null, reply_to:p.reply_to||null, fwd:!!p.fwd}).select().single();
+  if(error){ toast(/row-level/.test(error.message) ? 'You cannot post here.' : 'Could not send. Try again.'); return false; }
+  gmsgs.set(data.id, data); renderGroup(true); refresh(); return true;
+}
+async function uploadAndSend(sendFn, blob, mime, meta){
+  if(!navigator.onLine){ toast("You're offline."); return false; }
+  toast('Sending…'); const path = `${me.id}/${crypto.randomUUID()}.${EXT[mime]||'bin'}`;
+  const up = await sb.storage.from('gistly-chat').upload(path, blob, {contentType:mime});
+  if(up.error){ toast('Could not upload. Try again.'); return false; }
+  const rt = replyTo; replyTo = null; paintReply();
+  const ok = await sendFn({...meta, media_path:path, reply_to:rt && rt.id}); if(ok) $('#toast').style.display = 'none'; return ok;
+}
+async function sendFile(f, sendFn){
+  if(f.size > 15*1024*1024){ toast('That file is too big. The limit is 15 MB.'); return; }
+  const ext = (f.name.split('.').pop() || '').toLowerCase(), type = f.type || '';
+  if(type.startsWith('image/')){
+    try{ const bmp = await createImageBitmap(f), sc = Math.min(1, 1280/Math.max(bmp.width, bmp.height)), c = document.createElement('canvas'); c.width = Math.round(bmp.width*sc); c.height = Math.round(bmp.height*sc); c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+      const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .82)); await uploadAndSend(sendFn, blob, 'image/jpeg', {kind:'image', body:'Photo', media_name:f.name, media_size:blob.size}); }
+    catch(e){ toast('Could not read that photo.'); } return;
+  }
+  if(type.startsWith('video/')){ if(!EXT[type]){ toast('That video type is not supported.'); return; } await uploadAndSend(sendFn, f, type, {kind:'video', body:'Video', media_name:f.name, media_size:f.size}); return; }
+  const mime = DOC[ext]; if(!mime){ toast('That file type is not supported.'); return; }
+  await uploadAndSend(sendFn, f, mime, {kind:'file', body:f.name.slice(0,200), media_name:f.name, media_size:f.size});
+}
+async function startRec(P, comp, sendFn){
+  if(rec) return;
+  if(!navigator.mediaDevices || !window.MediaRecorder){ toast('Voice notes are not supported on this browser.'); return; }
+  let stream; try{ stream = await navigator.mediaDevices.getUserMedia({audio:{channelCount:{ideal:1}, sampleRate:{ideal:48000}, echoCancellation:false, noiseSuppression:false, autoGainControl:false}}); }catch(e){ toast('Allow the microphone to record voice notes.'); return; }
+  // raw microphone -> gentle volume boost -> soft limiter (stops loud sounds from clipping and cracking)
+  let rstream = stream, ac = null;
+  try{
+    ac = new (window.AudioContext || window.webkitAudioContext)(); if(ac.resume) await ac.resume();
+    const src = ac.createMediaStreamSource(stream), gain = ac.createGain(), lim = ac.createDynamicsCompressor(), dest = ac.createMediaStreamDestination();
+    gain.gain.value = 1.6; lim.threshold.value = -10; lim.knee.value = 6; lim.ratio.value = 10; lim.attack.value = .003; lim.release.value = .2;
+    src.connect(gain); gain.connect(lim); lim.connect(dest); rstream = dest.stream;
+  }catch(e){ if(ac){ try{ ac.close(); }catch(_){} } ac = null; rstream = stream; }
+  const mt = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg'].find(t => MediaRecorder.isTypeSupported(t)) || '';
+  const mr = new MediaRecorder(rstream, Object.assign(mt ? {mimeType:mt} : {}, {audioBitsPerSecond:96000})), chunks = [];
+  mr.ondataavailable = e => { if(e.data && e.data.size) chunks.push(e.data); };
+  rec = {mr, stream, ac, chunks, t0:Date.now(), comp, sendFn, send:false, mime:(mr.mimeType || mt || 'audio/webm').split(';')[0]};
+  mr.onstop = async () => { stream.getTracks().forEach(t => t.stop()); if(ac){ try{ ac.close(); }catch(_){} } const r = rec; clearInterval(r.iv); rec = null; r.comp.classList.remove('recording');
+    if(!r.send) return; const dur = Math.round((Date.now() - r.t0)/1000); if(dur < 1){ toast('Keep holding a little longer to record.'); return; }
+    const blob = new Blob(r.chunks, {type:r.mime}); await uploadAndSend(r.sendFn, blob, r.mime, {kind:'voice', body:'Voice note', media_dur:dur, media_size:blob.size}); };
+  mr.start(); comp.classList.add('recording'); const rt = $('#'+P+'-rt'); rt.textContent = '0:00';
+  rec.iv = setInterval(() => { const x = (Date.now() - rec.t0)/1000; rt.textContent = fmtDur(x); if(x >= 180) stopRec(true); }, 250);
+}
+function stopRec(send){ if(!rec) return; rec.send = send; try{ rec.mr.stop(); }catch(e){} }
+function makeComposer(P, sendFn){
+  const el = id => $('#'+P+'-'+id), ta2 = el('text'), send = el('send'), mic = el('mic'), comp = ta2.parentElement;
+  const sync = () => { const has = !!ta2.value.trim(); send.style.display = has ? 'flex' : 'none'; mic.style.display = has ? 'none' : 'flex'; ta2.style.height = 'auto'; ta2.style.height = Math.min(ta2.scrollHeight, 120) + 'px'; };
+  ta2.addEventListener('input', sync);
+  send.onclick = async () => { const body = ta2.value.trim(); if(!body) return; const rt = replyTo; ta2.value = ''; sync(); replyTo = null; paintReply();
+    const ok = await sendFn({kind:'text', body, reply_to:rt && rt.id}); if(!ok){ ta2.value = body; sync(); } };
+  el('attach').onclick = () => el('file').click();
+  el('file').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if(f) await sendFile(f, sendFn); };
+  mic.onclick = () => startRec(P, comp, sendFn); el('rc').onclick = () => stopRec(false); el('rs').onclick = () => stopRec(true);
+}
+makeComposer('c', sendDM); makeComposer('g', sendGroup);
+document.addEventListener('visibilitychange', () => { if(document.hidden){ try{ if(vn.a) vn.a.pause(); }catch(e){} if(rec) stopRec(false); } });
+
+/* ----- message requests ----- */
+function openRequests(){
+  view('v-reqs'); const ids = requestIds(), box = $('#rq-body');
+  box.innerHTML = ids.length ? ids.map(id => { const p = profs.get(id) || {username:'user'}, last = [...msgs.values()].filter(m => m.sender === id && m.receiver === me.id).sort((a,b) => new Date(b.created_at)-new Date(a.created_at))[0];
+    return `<div class="card" data-id="${id}" style="margin:12px 0 0"><div class="mrow">${avatar(p)}<div style="flex:1;min-width:0"><b>${esc(nameOf(p))}</b><div class="hint" style="margin:0">@${esc(p.username)}</div></div></div><p style="margin:6px 0 12px;white-space:pre-wrap">${esc(last ? previewOf(last) : '')}</p><div style="display:flex;gap:8px"><button class="btn sm" data-a="acc">Accept</button><button class="btn ghost sm" data-a="dec">Decline</button></div></div>`; }).join('')
+    : '<div class="empty"><b>No requests</b>When someone new messages you, it shows here.</div>';
+  box.onclick = async e => { const b = e.target.closest('[data-a]'); if(!b) return; const id = b.closest('[data-id]').dataset.id, acc = b.dataset.a === 'acc';
+    const {error} = await sb.rpc('gistly_dm_respond', {other_id:id, accept:acc}); if(error){ toast('Could not save that.'); return; } allow.set(id, acc ? 'allowed' : 'declined'); if(acc) openChat(profs.get(id)); else openRequests(); };
+}
+$('#rq-back').onclick = () => { view('v-main'); setTab('chats'); };
+
+/* ----- groups and channels ----- */
+async function openGroup(gid){
+  let g = groups.get(gid);
+  if(!g){ const {data} = await sb.from('gistly_groups').select('*').eq('id', gid).maybeSingle(); if(!data){ toast('That chat is not available.'); return; } g = data; groups.set(g.id, g); }
+  grpCur = g; replyTo = null; paintReply();
+  if(![...gmsgs.values()].some(m => m.group_id === gid)) await loadGroupMsgs(gid);
+  view('v-group'); renderGroup(true); readGroup(gid);
+  if(g.kind === 'channel') sb.rpc('gistly_group_count', {gid}).then(({data}) => { g._n = data; if(grpCur && grpCur.id === gid) renderGroup(); });
+}
+async function readGroup(gid){ if(!gmem.has(gid)) return; gmem.get(gid).last_read = new Date().toISOString(); await sb.rpc('gistly_read_group', {gid}); }
+function renderGroup(toEnd){
+  const g = grpCur; if(!g) return; const box = $('#gmsgs'), atEnd = toEnd || box.scrollHeight - box.scrollTop - box.clientHeight < 120;
+  $('#gr-name').textContent = g.name; $('#gr-av').innerHTML = groupAvatar(g, 'sm');
+  $('#gr-sub').textContent = g.kind === 'channel' ? (g._n != null ? g._n + ' follower' + (g._n === 1 ? '' : 's') : 'Channel') : 'Tap for group info';
+  const member = gmem.has(g.id), post = canPost(g.id); $('#g-comp').style.display = post ? 'flex' : 'none';
+  const note = $('#g-note'); note.style.display = post ? 'none' : 'block';
+  if(!member) note.innerHTML = '<button class="btn" id="g-join">Follow channel</button>'; else note.textContent = g.kind === 'channel' ? 'Only admins can post here' : 'Only admins can send messages';
+  const list = [...gmsgs.values()].filter(m => m.group_id === g.id && !hidden.has(m.id)).sort((a,b) => new Date(a.created_at)-new Date(b.created_at)).slice(-150); let prev = null;
+  box.innerHTML = list.length ? list.map(m => { const first = !prev || prev.sender !== m.sender || new Date(m.created_at)-new Date(prev.created_at) > 120000; prev = m; const mine = m.sender === me.id;
+    return bubble(m, {mine, first, grp:true, ch:g.kind === 'channel', name:(g.kind === 'group' && !mine && first) ? nameFor(m.sender) : null}); }).join('')
+    : `<div class="empty"><b>${g.kind === 'channel' ? 'No posts yet' : 'No messages yet'}</b>${post ? 'Send the first one.' : 'Posts will appear here.'}</div>`;
+  hydrateMedia(box); if(atEnd) box.scrollTop = box.scrollHeight;
+}
+$('#g-note').onclick = async e => { if(!e.target.closest('#g-join') || !grpCur) return; const {error} = await sb.rpc('gistly_join', {gid:grpCur.id}); if(error){ toast('Could not follow.'); return; } await loadGroups(); renderGroup(); };
+$('#gr-back').onclick = () => { grpCur = null; view('v-main'); setTab('chats'); };
+$('#gr-t').onclick = () => openGInfo();
+$('#gi-back').onclick = () => { if(grpCur){ view('v-group'); renderGroup(); } else { view('v-main'); setTab('chats'); } };
+
+function openNewMenu(){
+  const mm = $('#modal');
+  mm.innerHTML = `<div class="mbox msheet"><b>Start something new</b><button class="act" data-n="chat">${ic('comment',22)} New chat</button><button class="act" data-n="group">${ic('users',22)} New group</button><button class="act" data-n="channel">${ic('megaphone',22)} New channel</button><button class="chip" data-n="x">Cancel</button></div>`; mm.classList.add('on');
+  mm.onclick = e => { const t = e.target.closest('button'); if(!t){ if(e.target === mm) mm.classList.remove('on'); return; } mm.classList.remove('on');
+    if(t.dataset.n === 'chat'){ feedTab = 'people'; setTab('discover'); } else if(t.dataset.n === 'group' || t.dataset.n === 'channel') openNewGroup(t.dataset.n); };
+}
+function openNewGroup(kind){
+  gnKind = kind; gsel.clear(); paintChips(); $('#gn-name').value = ''; $('#gn-desc').value = ''; $('#gn-err').textContent = ''; $('#gn-q').value = ''; $('#gn-res').innerHTML = '';
+  $('#gn-title').textContent = kind === 'channel' ? 'New channel' : 'New group'; $('#gn-chan').style.display = kind === 'channel' ? 'block' : 'none'; $('#gn-mem').style.display = kind === 'channel' ? 'none' : 'block'; view('v-gnew');
+}
+function paintChips(){ $('#gn-chips').innerHTML = [...gsel.values()].map(p => `<button class="chip on" data-id="${p.id}">@${esc(p.username)} ${ic('close',12)}</button>`).join(''); }
+$('#gn-back').onclick = () => { view('v-main'); setTab('chats'); };
+$('#gn-pub').onclick = e => { const b = e.currentTarget; b.classList.toggle('on'); b.setAttribute('aria-checked', b.classList.contains('on')); };
+let gnT; $('#gn-q').oninput = e => { const v = e.target.value = cleanUser(e.target.value); clearTimeout(gnT); gnT = setTimeout(async () => {
+  if(!v){ $('#gn-res').innerHTML = ''; return; } const {data} = await sb.from('gistly_profiles').select('*').ilike('username', v+'%').neq('id', me.id).order('username').limit(8); (data||[]).forEach(p => profs.set(p.id, p));
+  $('#gn-res').innerHTML = (data||[]).map(p => `<button class="row" data-id="${p.id}">${avatar(p, 'sm')}<div class="mid"><div class="nm">${esc(nameOf(p))}</div><div class="pv">@${esc(p.username)}</div></div></button>`).join(''); }, 300); };
+$('#gn-res').onclick = e => { const r = e.target.closest('.row'); if(!r) return; gsel.set(r.dataset.id, profs.get(r.dataset.id)); $('#gn-q').value = ''; $('#gn-res').innerHTML = ''; paintChips(); };
+$('#gn-chips').onclick = e => { const c = e.target.closest('.chip'); if(c){ gsel.delete(c.dataset.id); paintChips(); } };
+$('#gn-go').onclick = async () => {
+  const nm = $('#gn-name').value.trim(), err = $('#gn-err'); err.textContent = ''; if(!nm){ err.textContent = 'Please give it a name.'; return; }
+  const b = $('#gn-go'); b.disabled = true; b.textContent = 'Creating…';
+  const {data, error} = await sb.rpc('gistly_create_group', {k:gnKind, nm, descr:$('#gn-desc').value.trim(), pub:$('#gn-pub').classList.contains('on'), members:[...gsel.keys()]});
+  b.disabled = false; b.textContent = 'Create'; if(error){ err.textContent = error.message.replace(/^.*?:\s*/, ''); return; }
+  await loadGroups(); openGroup(data);
+};
+
+async function openGInfo(){
+  const g = grpCur; if(!g) return; view('v-ginfo'); const box = $('#gi-body'); box.innerHTML = '<div class="empty">Loading…</div>';
+  const role = roleOf(g.id), admin = role === 'owner' || role === 'admin', member = !!role; let members = [];
+  if(member){ const {data} = await sb.from('gistly_group_members').select('*').eq('group_id', g.id).limit(300); members = data || []; await ensureProfiles(members.map(x => x.user_id)); }
+  const link = location.origin + location.pathname + '?g=' + g.invite_code, kind = g.kind === 'channel' ? 'channel' : 'group', mine = gmem.get(g.id) || {};
+  box.innerHTML = `<div class="phead" style="background:var(--pale)"><div style="display:flex;justify-content:center;margin-bottom:10px">${groupAvatar(g)}</div><h2>${esc(g.name)}</h2><div class="hint">${kind === 'channel' ? 'Channel' : 'Group'} · ${members.length || g._n || 0} ${kind === 'channel' ? 'follower' : 'member'}${(members.length || g._n || 0) === 1 ? '' : 's'}</div>${g.description ? `<p style="margin-top:8px;line-height:1.4">${esc(g.description)}</p>` : ''}</div>
+  ${admin ? `<div class="card"><label for="gi-name" style="margin-top:0">Name</label><input id="gi-name" maxlength="60" value="${esc(g.name)}"><label for="gi-desc">Description</label><textarea id="gi-desc" rows="2" maxlength="300">${esc(g.description)}</textarea>
+    ${kind === 'group' ? `<div class="setrow"><div>Only admins can send messages<small>Good for announcements.</small></div><button class="tg ${g.admins_only?'on':''}" id="gi-ao" role="switch" aria-checked="${g.admins_only}" aria-label="Only admins can send messages"></button></div>` : `<div class="setrow"><div>Public channel<small>Anyone can find and follow it.</small></div><button class="tg ${g.is_public?'on':''}" id="gi-pub" role="switch" aria-checked="${g.is_public}" aria-label="Public channel"></button></div>`}
+    <div class="ok" id="gi-ok"></div><button class="btn sm" id="gi-save" style="margin-top:8px">Save changes</button></div>` : ''}
+  ${member ? `<div class="card"><div class="setrow"><div>Mute notifications</div><button class="tg ${mine.muted?'on':''}" id="gi-mute" role="switch" aria-checked="${!!mine.muted}" aria-label="Mute notifications"></button></div>${admin ? `<div class="setrow"><div>Invite link<small style="word-break:break-all">${esc(link)}</small></div><button class="btn ghost sm" id="gi-copy">Copy</button></div>` : ''}</div>` : ''}
+  ${admin && kind === 'group' ? `<div class="card"><label for="gi-q" style="margin-top:0">Add people</label><input id="gi-q" placeholder="Search a username" autocapitalize="none"><div id="gi-res"></div></div>` : ''}
+  ${(kind === 'group' || admin) && member ? `<div class="sec">${kind === 'channel' ? 'Followers' : 'Members'}</div><div class="card" id="gi-mem" style="padding:6px 16px">${members.map(x => { const p = profs.get(x.user_id) || {username:'user'};
+    const canR = admin && x.role !== 'owner' && x.user_id !== me.id && (role === 'owner' || x.role === 'member');
+    return `<div class="mrow" data-uid="${x.user_id}">${avatar(p, 'sm')}<div style="flex:1;min-width:0"><b>${esc(nameOf(p))}</b><div class="hint" style="margin:0">@${esc(p.username)}</div></div>${x.role !== 'member' ? `<span class="tag">${x.role}</span>` : ''}${role === 'owner' && x.role !== 'owner' ? `<button class="chip" data-act="role" data-r="${x.role === 'admin' ? 'member' : 'admin'}" style="min-height:34px;padding:4px 10px">${x.role === 'admin' ? 'Remove admin' : 'Make admin'}</button>` : ''}${canR ? `<button class="chip" data-act="rm" style="min-height:34px;padding:4px 10px;color:var(--err)">Remove</button>` : ''}</div>`; }).join('')}</div>` : ''}
+  ${member ? `<div class="card">${role === 'owner' ? `<button class="btn ghost" id="gi-del" style="color:var(--err)">Delete this ${kind}</button>` : `<button class="btn ghost" id="gi-leave" style="color:var(--err)">${kind === 'channel' ? 'Unfollow channel' : 'Leave group'}</button>`}</div>` : ''}`;
+  const $$ = id => document.getElementById(id), refreshInfo = async () => { await loadGroups(); grpCur = groups.get(g.id) || grpCur; openGInfo(); };
+  if($$('gi-ao')) $$('gi-ao').onclick = e => { e.currentTarget.classList.toggle('on'); };
+  if($$('gi-pub')) $$('gi-pub').onclick = e => { e.currentTarget.classList.toggle('on'); };
+  if($$('gi-save')) $$('gi-save').onclick = async () => {
+    const {error} = await sb.rpc('gistly_update_group', {gid:g.id, nm:$$('gi-name').value, descr:$$('gi-desc').value, admins:$$('gi-ao') ? $$('gi-ao').classList.contains('on') : null, pub:$$('gi-pub') ? $$('gi-pub').classList.contains('on') : null});
+    if(error){ $$('gi-ok').className = 'err'; $$('gi-ok').textContent = error.message.replace(/^.*?:\s*/, ''); return; } await loadGroups(); grpCur = groups.get(g.id); $$('gi-ok').className = 'ok'; $$('gi-ok').textContent = 'Saved'; };
+  if($$('gi-mute')) $$('gi-mute').onclick = async e => { const on = !e.currentTarget.classList.contains('on'); e.currentTarget.classList.toggle('on', on); await sb.rpc('gistly_mute_group', {gid:g.id, m:on}); if(gmem.get(g.id)) gmem.get(g.id).muted = on; };
+  if($$('gi-copy')) $$('gi-copy').onclick = () => { if(navigator.clipboard) navigator.clipboard.writeText(link); toast('Link copied'); };
+  if($$('gi-q')) { let t2; $$('gi-q').oninput = e => { const v = e.target.value = cleanUser(e.target.value); clearTimeout(t2); t2 = setTimeout(async () => { if(!v){ $$('gi-res').innerHTML = ''; return; }
+    const {data} = await sb.from('gistly_profiles').select('*').ilike('username', v+'%').neq('id', me.id).order('username').limit(8); (data||[]).forEach(p => profs.set(p.id, p));
+    $$('gi-res').innerHTML = (data||[]).filter(p => !members.some(x => x.user_id === p.id)).map(p => `<button class="row" data-id="${p.id}">${avatar(p, 'sm')}<div class="mid"><div class="nm">${esc(nameOf(p))}</div><div class="pv">@${esc(p.username)} · tap to add</div></div></button>`).join(''); }, 300); };
+    $$('gi-res').onclick = async e => { const r = e.target.closest('.row'); if(!r) return; const {error} = await sb.rpc('gistly_add_member', {gid:g.id, uid:r.dataset.id}); if(error){ toast(error.message.replace(/^.*?:\s*/, '')); return; } toast('Added'); refreshInfo(); }; }
+  if($$('gi-mem')) $$('gi-mem').onclick = async e => { const b = e.target.closest('[data-act]'); if(!b) return; const uid = b.closest('[data-uid]').dataset.uid;
+    const {error} = b.dataset.act === 'rm' ? await sb.rpc('gistly_remove_member', {gid:g.id, uid}) : await sb.rpc('gistly_set_role', {gid:g.id, uid, r:b.dataset.r}); if(error){ toast(error.message.replace(/^.*?:\s*/, '')); return; } refreshInfo(); };
+  if($$('gi-leave')) $$('gi-leave').onclick = async () => { if(!confirm('Leave this ' + kind + '?')) return; const {error} = await sb.rpc('gistly_leave', {gid:g.id}); if(error){ toast(error.message.replace(/^.*?:\s*/, '')); return; } gmem.delete(g.id); grpCur = null; view('v-main'); setTab('chats'); };
+  if($$('gi-del')) $$('gi-del').onclick = async () => { if(!confirm('Delete this ' + kind + ' for everyone? This cannot be undone.')) return; const {error} = await sb.rpc('gistly_delete_group', {gid:g.id}); if(error){ toast(error.message.replace(/^.*?:\s*/, '')); return; } gmem.delete(g.id); groups.delete(g.id); grpCur = null; view('v-main'); setTab('chats'); };
+}
+
+paintIcons(); paintMute();
+boot();
+</script>
+</body>
+</html>
